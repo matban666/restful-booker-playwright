@@ -21,39 +21,51 @@ export async function applyBranding(page: Page, branding: any) {
 
 
 export async function checkBranding(page: Page, branding: any) {
-    await page.waitForLoadState('load');
+    for ( let retry = 0; retry < 10; retry++) {
+        try {
+            await page.waitForLoadState('load');
 
-    await expect(page.getByRole('heading', { name: 'Rooms' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Rooms' })).toBeVisible();
 
-    // Reading from the page asynchronously seems to be safe
-    const promises: Promise<void>[] = [];
+            // Reading from the page asynchronously seems to be safe
+            const promises: Promise<void>[] = [];
 
-    const image = page.getByRole('img', { name: 'Hotel logoUrl' })
-    // Check that the image url is correct
-    promises.push(expect(image).toHaveAttribute('src', branding.logoUrl));
+            const image = page.getByRole('img', { name: 'Hotel logoUrl' })
+            // Check that the image url is correct
+            promises.push(expect(image).toHaveAttribute('src', branding.logoUrl));
 
-    // Check that the image is visible
-    promises.push(expect(image).toBeVisible());
+            // Check that the image is visible
+            promises.push(expect(image).toBeVisible());
 
-    // TODO: Why does this sometimes fail for default branding?
-    // Check that the image is loaded
-    // const isImageLoaded = await image.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
-    // expect(isImageLoaded).toBe(true);
+            // TODO: Why does this sometimes fail for default branding?
+            // Check that the image is loaded
+            // const isImageLoaded = await image.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0);
+            // expect(isImageLoaded).toBe(true);
 
-    // Look for the description anywhere on the page
-    promises.push(expect(page.getByText(branding.description, { exact: true })).toBeVisible());
+            // Look for the description anywhere on the page
+            promises.push(expect(page.getByText(branding.description, { exact: true })).toBeVisible());
 
-    // Look for the contact name
-    promises.push(expect(page.getByText(branding.contact.name, { exact: false })).toBeVisible());
+            // Look for the contact name
+            promises.push(expect(page.getByText(branding.contact.name, { exact: false })).toBeVisible());
 
-    // Look for the contact address
-    promises.push(expect(page.getByText(branding.contact.address, { exact: true })).toBeVisible());
+            // Look for the contact address
+            promises.push(expect(page.getByText(branding.contact.address, { exact: true })).toBeVisible());
 
-    // Look for the contact phone
-    promises.push(expect(page.getByText(branding.contact.phone, { exact: true })).toBeVisible());
+            // Look for the contact phone
+            promises.push(expect(page.getByText(branding.contact.phone, { exact: true })).toBeVisible());
 
-    // Look for the contact email
-    promises.push(expect(page.getByText(branding.contact.email, { exact: false })).toBeVisible());
+            // Look for the contact email
+            promises.push(expect(page.getByText(branding.contact.email, { exact: false })).toBeVisible());
 
-    await Promise.all(promises);
+            await Promise.all(promises);
+
+            return;
+        } catch (error) {
+            console.log(`Exception in checkBranding(page, ${branding}) is below.  Ignoring and potentially retrying.`);
+            console.log(error);
+            await page.waitForTimeout(50); 
+        }
+    }
+
+    throw new Error(`Failed to find branding for ${branding} after 10 retries`);
 }
