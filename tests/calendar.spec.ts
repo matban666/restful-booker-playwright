@@ -4,7 +4,7 @@ import { checkCalenderHeaderDate, checkCalendarCell, changeMonth } from '../util
 import { Calendar } from '../utils/domain/calendar';
 
 
-//Backent state is not changed, so we can run these tests in parallel
+//Backend state is not changed, so we can run these tests in parallel
 test.describe.parallel('Calendar', () => {
     test.beforeEach(async ({page}) => {
         await loadHomepage(page);
