@@ -1,4 +1,5 @@
-import { test, expect, Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
+import { loadHomepage } from '../../utils/playwright/home';
 
 export async function applyBranding(page: Page, branding: any) {
     // Click on the branding link
@@ -23,6 +24,8 @@ export async function applyBranding(page: Page, branding: any) {
 export async function checkBranding(page: Page, branding: any) {
     for ( let retry = 0; retry < 10; retry++) {
         try {
+            await loadHomepage(page);
+
             await page.waitForLoadState('load');
 
             await expect(page.getByRole('heading', { name: 'Rooms' })).toBeVisible();

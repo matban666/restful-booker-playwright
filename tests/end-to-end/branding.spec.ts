@@ -1,5 +1,4 @@
 import { test } from '@playwright/test';  
-import { loadHomepage } from '../../utils/playwright/home';
 import { loadJsonTestConfig } from '../../utils/domain/json-loader';
 import { newAdminSession, resumeAdminSession } from '../../utils/playwright/admin-session';
 import { type Branding } from '../../test-data/types/branding';
@@ -18,7 +17,6 @@ test.describe.serial('Branding Tests', () => {
                 await applyBranding(page, branding);
             });
             test(`Check rebrand ${branding.name}`, async ({ page }) => {
-                await loadHomepage(page);
                 await checkBranding(page, branding);
             });
         });
@@ -34,7 +32,6 @@ test.describe.serial('Branding Tests', () => {
         });
 
         test('Check Branding', async ({ page }) => {
-            await loadHomepage(page);
             await checkBranding(page, defaultBranding);
         });
     });
