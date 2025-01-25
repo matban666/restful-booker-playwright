@@ -1,0 +1,17 @@
+[    
+    {
+        "name":"Rosebud Motel",
+        "map": {
+            "latitude":"44.01043955",
+            "longitude":"-79.9911400"
+        },
+        "logoUrl":"https://static.wikia.nocookie.net/schitts-creek/images/5/59/ETk26D9WsAE4kAL.jpg",
+        "description":"The motel offers a wide range of accommodations, from rooms with two beds, to rooms with one, to rooms with one or two beds and the option of a cot. Beds have box spring supported mattresses, and each room has a round screened television. A continental breakfast of pastries, courtesy of Ivans bakery, and coffee is available in the morning.",
+        "contact": {
+            "name":"Stevie Budd",
+            "address":"Rosebud Motel, 354 Eudan Road, Schitt's Creek",
+            "phone":"555123123123",
+            "email":"stevie@rosebud.com"
+        }
+    }
+]

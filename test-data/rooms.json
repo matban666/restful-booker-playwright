@@ -1,0 +1,33 @@
+[
+    {
+        "roomName": "1738",
+        "type": "Single",
+        "accessible": false,
+        "description": "Our cleanest room.",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/7/74/Hotel_room_in_Berlin_1.jpg",
+        "roomPrice": 88,
+        "features": []
+    },
+    {
+        "roomName": "666",
+        "type": "Single",
+        "accessible": false,
+        "description": "All work and no play makes Jack a dull boy.",
+        "image": "https://images.squarespace-cdn.com/content/v1/542227c8e4b01cc5399bd3df/1418613559979-VBQNZIHT2179GX0NQS9V/image-asset.jpeg",
+        "roomPrice": 666,
+        "features": []
+    },
+    {
+        "roomName": "777",
+        "type": "Twin",
+        "accessible": true,
+        "description": "Please enter a description for this room",
+        "image": "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
+        "roomPrice": 444,
+        "features": [
+            "WiFi",
+            "Radio",
+            "Safe"
+        ]
+    }
+]

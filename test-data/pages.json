@@ -1,0 +1,12 @@
+[
+    {
+        "name":"customer",
+        "requiresAuth":false,
+        "relativePath": ""
+    },
+    {
+        "name":"admin",
+        "requiresAuth":true,
+        "relativePath": ""
+    }
+]

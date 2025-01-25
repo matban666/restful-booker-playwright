@@ -1,0 +1,16 @@
+[
+    {
+        "contactName": "John Doe",
+        "contactEmail": "john@doe",
+        "contactSubject": "My premature demise",
+        "contactPhone": "1234567890123",
+        "contactDescription": "I am writing to inform you that I have died and therefore cannot make it to hotel."
+    },
+    {
+        "contactName": "Jane Doe",
+        "contactEmail": "jane@doe",
+        "contactSubject": "My premature demise",
+        "contactPhone": "1234567890123",
+        "contactDescription": "Rumours of my demise have been greatly exaggerated, I shall be there."
+    }
+]

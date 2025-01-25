@@ -1,0 +1,18 @@
+[
+    {
+        "email": "",
+        "error": "Email may not be blank"
+    },
+    {
+        "email": "john",
+        "error": "must be a well-formed email address"
+    },
+    {
+        "email": ".com",
+        "error": "must be a well-formed email address"
+    },
+    {
+        "email": "john@doe.com.",
+        "error": "must be a well-formed email address"
+    }
+]
