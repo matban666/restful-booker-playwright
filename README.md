@@ -1,1 +1,1 @@
-# rest-booker-playwright
+# restful-booker-playwright
