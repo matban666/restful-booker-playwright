@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';
 
-export async function* findBookings(page: Page, bookingFirstname, bookingLastname, bookingCheckInString, bookingCheckOutString) { 
+async function* findBookings(page: Page, bookingFirstname, bookingLastname, bookingCheckInString, bookingCheckOutString) { 
 
     const listItems = await page.locator(`//div[contains(@class, 'detail') and contains(@class, 'booking')]/div[contains(@class, 'row')]`).all();
     

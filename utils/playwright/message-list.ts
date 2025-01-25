@@ -29,16 +29,16 @@ export async function getMessageCount(page: Page, name: string, subject: string)
     return count;
 }
 
-export async function getExactlyOneMessage(page: Page, name: string, subject: string, retries = 10) {
+export async function getExactlyOneMessage(page: Page, name: string, subject: string, retries = 10, messageCount = 1, strict = true) {
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundMessage: any = null;
+        let foundMessages: any[] = [];
 
         try {
             for await (const matchingBooking of findMessages(page, name, subject)) { 
                 
-                foundMessage = matchingBooking;
+                foundMessages.push(matchingBooking);
                 count++;
             }
         } catch (error) {
@@ -46,13 +46,13 @@ export async function getExactlyOneMessage(page: Page, name: string, subject: st
             console.log(error);
         }
 
-        if (count === 1) {
-            expect(foundMessage).not.toBeNull();
-        return foundMessage;
+        if (strict && count > messageCount) {
+            throw new Error(`Found more than ${messageCount} message(s) for ${name} ${subject}`);
         }
 
-        if (count > 1) {
-            throw new Error(`Found more than one message for ${name} ${subject}`);
+        if (count >= messageCount) {
+            expect(foundMessages[-1]).not.toBeNull();
+            return foundMessages;
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneMessage for ${name} ${subject}`);

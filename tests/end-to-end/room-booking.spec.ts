@@ -5,7 +5,7 @@ import { getExactlyOneRoom } from '../../utils/playwright/room-list';
 import { bookRoom } from '../../utils/playwright/booking';
 import { newAdminSession, resumeAdminSession } from '../../utils/playwright/admin-session';
 import { findMessages, getMessageCount, getExactlyOneMessage } from '../../utils/playwright/message-list';
-import { findBookings, getExactlyOneBooking, isBookingNotThere } from '../../utils/playwright/booking-list';
+import { getExactlyOneBooking, isBookingNotThere } from '../../utils/playwright/booking-list';
 import { getExpectedMessages } from '../../utils/domain/booking-messages';
 import { type Room } from '../../test-data/types/room';
 import { type Booking } from '../../test-data/types/booking';
@@ -112,57 +112,62 @@ test.describe.serial('Booking Tests', () => {
 
   test.describe.serial('Booking Messages', () => {
     // This get the messges we expect to see based on the bookings
-    const expectedMessages = getExpectedMessages(bookings);
+    const expectedBookigMessages = getExpectedMessages(bookings);
 
     // Loop through expected messages by sender
-    for (const sender in expectedMessages) {
+    for (const sender in expectedBookigMessages) {
 
       // Access the array for the current key
-      const messages = expectedMessages[sender];
+      const expectedMessages = expectedBookigMessages[sender];
 
-      // Loop through each message for the current sender and try to find it
-      for (const message of messages) {
-        test(`${sender} ${message.room} ${message.checkInString} ${message.checkOutString}`, async ({ page }) => {
-          await resumeAdminSession(page);
+      const messageCount = expectedMessages.length;
 
-          // All booking messages have the same subject
-          const subject = 'You have a new booking!';
+      const subject = 'You have a new booking!';
 
-          // TODO: Flags are not OO
-          let count = 0;
+      test(`Looking for ${messageCount} messages from ${sender}`, async ({ page, baseURL }) => {
+        await newAdminSession(page, baseURL);
 
-          // There may be multiple messages with the same sender and subject
-          for await (const item of findMessages(page, sender, subject)) {
-            // Select the current message
-            await item.row.click();
+        const matchingMessages = await getExactlyOneMessage(page, sender, subject, 10, messageCount);
 
-            // Check that a message is visible
-            const messageLocator = page.getByTestId('message');
-            await expect(messageLocator).toBeVisible();
+        console.log(`Found ${matchingMessages.length} messages for ${subject}`);
 
-            // Extract the message details from the page
-            // I don't like using indexes but there is very little else to go on
-            const currentMessageFrom = (await messageLocator.locator(`//div[1]/div[1]/p`).innerText()).slice(6);
-            const currentMessagePhone = (await messageLocator.locator(`//div[1]/div[2]/p`).innerText()).slice(7);
-            const currentMessageEmail = (await messageLocator.locator(`//div[2]/div[1]/p`).innerText()).slice(7);
-            const currentMessageSubject = await messageLocator.locator(`//div[3]//span`).textContent();
-            const currentMessageMessage = await messageLocator.locator(`//div[4]//p`).textContent();
+        let count = 0;
 
-            // Is the the message we are expecting?
-            if (currentMessageFrom === sender && currentMessagePhone === message.phone && currentMessageEmail === message.email && currentMessageSubject === subject && currentMessageMessage === message.expectedMessage) {
+        for (const message of matchingMessages) {
+          await message.row.click();
+
+          // Check that a message is visible
+          const messageLocator = page.getByTestId('message');
+          await expect(messageLocator).toBeVisible();
+
+          // Extract the message details from the page
+          // I don't like using indexes but there is very little else to go on
+          const currentMessageFrom = (await messageLocator.locator(`//div[1]/div[1]/p`).innerText()).slice(6);
+          const currentMessagePhone = (await messageLocator.locator(`//div[1]/div[2]/p`).innerText()).slice(7);
+          const currentMessageEmail = (await messageLocator.locator(`//div[2]/div[1]/p`).innerText()).slice(7);
+          const currentMessageSubject = await messageLocator.locator(`//div[3]//span`).textContent();
+          const currentMessageMessage = await messageLocator.locator(`//div[4]//p`).textContent();
+
+          // Is the the message we are expecting?
+          for (const expectedMessageIndex in expectedMessages) {
+            //TODO: This is a bit clumsy and not effecient - We could perpahs use sets or hashs
+            const expectedMessage = expectedMessages[expectedMessageIndex];
+            if (currentMessageFrom === sender && currentMessagePhone === expectedMessage.phone && currentMessageEmail === expectedMessage.email && currentMessageSubject === subject && currentMessageMessage === expectedMessage.expectedMessage) {
               count++;
+              break;
             }
-
-            await page.getByRole('button', { name: 'Close' }).click();
           }
+          await page.getByRole('button', { name: 'Close' }).click();
+        }
 
-          // The room name is not shown in the message or message list so we can't check it without referencing the booking on the room/report page
-          // So if the same user books different rooms on the same dates we will not be able to distinguish them
-          // if we were aware of the room then we could check that the count below is exactly 1, or we could count duplicates in expectedMessages 
-          // but all solutions seem a bit involved for this simple test
-          expect(count > 0).toBe(true);
-        });
-      }
+        // The room name is not shown in the message or message list so we can't check it without referencing the booking on the room/report page
+        // So if the same user books different rooms on the same dates we will not be able to distinguish them
+        // if we were aware of the room then we could check that the count below is exactly 1, or we could count duplicates in expectedMessages 
+        // but all solutions seem a bit involved for this simple test
+        console.log(`Found ${count} messages out of ${messageCount} for ${sender}`);
+        expect(count >= messageCount).toBe(true);
+
+      });
     }
   });
 
@@ -229,24 +234,43 @@ test.describe.serial('Booking Tests', () => {
     }
   });
 
-  
-  test(`Delete Booking Messages`, async ({ page, baseURL }) => {
-    await newAdminSession(page, baseURL);
+  test.describe.serial('Delete Booking Messages', () => {
+    // This get the messges we expect to see based on the bookings
+    const expectedBookigMessages = getExpectedMessages(bookings);
 
-    // Loop bookings
-    for (const booking in bookings) {
-        const sender = bookings[booking].firstname + ' ' + bookings[booking].lastname;
-        const subject = 'You have a new booking!';
+    // Loop through expected messages by sender
+    for (const sender in expectedBookigMessages) {
 
-        for await (const item of findMessages(page, sender, subject)) {
-          //TODO: This is a bit of a cheat. We should be checking the message content
-          // We are arbitrarily selecting the message to delete, it just happens that there
-          // will be the correct number of messages deleted but each deleton does not 
-          // correspond to a specific booking
-          await item.deleteIcon.click();
-          break;
+      // Access the array for the current key
+      const expectedMessages = expectedBookigMessages[sender];
+
+      const messageCount = expectedMessages.length;
+
+      const subject = 'You have a new booking!';
+
+      test(`Deleting ${messageCount} messages from ${sender}`, async ({ page, baseURL }) => {
+        await newAdminSession(page, baseURL);
+
+        //TODO: This is a bit of a cheat. We should be checking the message content
+        // We are arbitrarily selecting the message to delete, it just happens that there
+        // will be the correct number of messages deleted but each deleton does not 
+        // correspond to a specific booking
+        for (const expectedMessageIndex in expectedMessages) {
+
+          const matchingMessages = await getExactlyOneMessage(page, sender, subject, 10, 1, false);
+
+          console.log(`Found ${matchingMessages.length} messages from ${sender} for ${subject}`);
+
+        
+          await matchingMessages[0].deleteIcon.click();
         }
-      }
+
+        // The room name is not shown in the message or message list so we can't check it without referencing the booking on the room/report page
+        // So if the same user books different rooms on the same dates we will not be able to distinguish them
+        // if we were aware of the room then we could check that the count below is exactly 1, or we could count duplicates in expectedMessages 
+        // but all solutions seem a bit involved for this simple test
+      });
+    }
   });
 
   rooms.forEach((room) => {
