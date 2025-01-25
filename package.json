@@ -1,0 +1,22 @@
+{
+  "name": "restful-booker-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matban666/restful-booker-playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matban666/restful-booker-playwright/issues"
+  },
+  "homepage": "https://github.com/matban666/restful-booker-playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^22.10.10"
+  }
+}
