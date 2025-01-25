@@ -26,15 +26,15 @@ async function* findBookings(page: Page, bookingFirstname, bookingLastname, book
     }
 }
 
-export async function getBookingCount(page, firstname, lastname, checkInString, checkOutString) {
-    let count = 0;
-    for await (const _ of findBookings(page, firstname, lastname, checkInString, checkOutString)) { 
-        count++;
-    }
-    return count;
-}
+// export async function getBookingCount(page, firstname, lastname, checkInString, checkOutString) {
+//     let count = 0;
+//     for await (const _ of findBookings(page, firstname, lastname, checkInString, checkOutString)) { 
+//         count++;
+//     }
+//     return count;
+// }
 
-export async function getExactlyOneBooking(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
+export async function getBookings(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
 
     // TODO: Report how long this actually takes
     for (let retry = 0; retry < retries; retry++) {
@@ -69,20 +69,20 @@ export async function getExactlyOneBooking(page, firstname, lastname, checkInStr
 }
 
 
-export async function isBookingNotThere(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
+// export async function isBookingNotThere(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
 
-    for (let retry = 0; retry < retries; retry++) {
+//     for (let retry = 0; retry < retries; retry++) {
 
-        const count = await getBookingCount(page, firstname, lastname, checkInString, checkOutString);
+//         const count = await getBookingCount(page, firstname, lastname, checkInString, checkOutString);
 
-        if (count === 0) {
-            return true;
-        }
+//         if (count === 0) {
+//             return true;
+//         }
 
-        console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneBooking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
-        await page.waitForTimeout(50); 
-    }
+//         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneBooking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
+//         await page.waitForTimeout(50); 
+//     }
 
-    throw new Error(`Booking is still there: ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
-}
+//     throw new Error(`Booking is still there: ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
+// }
 

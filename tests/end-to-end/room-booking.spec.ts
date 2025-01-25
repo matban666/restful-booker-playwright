@@ -1,11 +1,11 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { loadHomepage } from '../../utils/playwright/home';
 import { loadJsonTestConfig } from '../../utils/domain/json-loader';
-import { getExactlyOneRoom } from '../../utils/playwright/room-list';
+import { getRooms } from '../../utils/playwright/room-list';
 import { bookRoom } from '../../utils/playwright/booking';
 import { newAdminSession, resumeAdminSession } from '../../utils/playwright/admin-session';
-import { findMessages, getMessageCount, getExactlyOneMessage } from '../../utils/playwright/message-list';
-import { getExactlyOneBooking, isBookingNotThere } from '../../utils/playwright/booking-list';
+import { getMessages } from '../../utils/playwright/message-list';
+import { getBookings } from '../../utils/playwright/booking-list';
 import { getExpectedMessages } from '../../utils/domain/booking-messages';
 import { type Room } from '../../test-data/types/room';
 import { type Booking } from '../../test-data/types/booking';
@@ -31,7 +31,7 @@ test.describe.serial('Booking Tests', () => {
       await page.getByRole('button', { name: 'Create' }).click();
 
       // Check the room is now in the list
-      const roomListItem = await getExactlyOneRoom(page, room.roomName);
+      const roomListItem = await getRooms(page, room.roomName);
 
       // Click on the room and fill in the extra details
       await roomListItem.row.click();
@@ -127,7 +127,7 @@ test.describe.serial('Booking Tests', () => {
       test(`Looking for ${messageCount} messages from ${sender}`, async ({ page, baseURL }) => {
         await newAdminSession(page, baseURL);
 
-        const matchingMessages = await getExactlyOneMessage(page, sender, subject, 10, messageCount);
+        const matchingMessages = await getMessages(page, sender, subject, 10, messageCount);
 
         console.log(`Found ${matchingMessages.length} messages for ${subject}`);
 
@@ -177,7 +177,7 @@ test.describe.serial('Booking Tests', () => {
         await resumeAdminSession(page);
 
         // Get the room
-        const room = await getExactlyOneRoom(page, booking.roomName);
+        const room = await getRooms(page, booking.roomName);
 
         expect(room).not.toBeNull();
 
@@ -186,7 +186,7 @@ test.describe.serial('Booking Tests', () => {
 
         // Find the booking
         const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
-        const bookingRow = await getExactlyOneBooking(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+        const bookingRow = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
 
         expect(room).not.toBeNull();
 
@@ -213,7 +213,7 @@ test.describe.serial('Booking Tests', () => {
       test(`Delete booking: ${booking.description}`, async ({ page, baseURL }) => {
         await newAdminSession(page, baseURL);
 
-        const room = await getExactlyOneRoom(page, booking.roomName);
+        const room = await getRooms(page, booking.roomName);
 
         console.log(`Room Name: ${booking.roomName}`);
 
@@ -223,7 +223,7 @@ test.describe.serial('Booking Tests', () => {
 
         console.log(`Booking: ${booking.firstname} ${booking.lastname} ${checkInString} ${checkOutString}`);
 
-        const bookingItem = await getExactlyOneBooking(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+        const bookingItem = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
 
         // Check the booking is there
         await bookingItem.deleteIcon.click();
@@ -257,7 +257,7 @@ test.describe.serial('Booking Tests', () => {
         // correspond to a specific booking
         for (const expectedMessageIndex in expectedMessages) {
 
-          const matchingMessages = await getExactlyOneMessage(page, sender, subject, 10, 1, false);
+          const matchingMessages = await getMessages(page, sender, subject, 10, 1, false);
 
           console.log(`Found ${matchingMessages.length} messages from ${sender} for ${subject}`);
 
@@ -281,7 +281,7 @@ test.describe.serial('Booking Tests', () => {
       await expect(page.getByRole('link', { name: 'Rooms' })).toBeVisible();
 
       // Get the room from the list
-      const roomItem = await getExactlyOneRoom(page, room.roomName);
+      const roomItem = await getRooms(page, room.roomName);
 
       // Delete the room
       if (roomItem) {

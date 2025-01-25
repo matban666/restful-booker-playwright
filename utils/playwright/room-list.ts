@@ -1,7 +1,7 @@
 import { expect, type Page, type Locator } from '@playwright/test';
 
 
-export async function* findRooms(page: Page, roomName: string) {
+async function* findRooms(page: Page, roomName: string) {
     
   // Not sure if this should be here
   await expect(page.getByRole('link', { name: 'Admin panel' })).toBeVisible();
@@ -24,15 +24,15 @@ export async function* findRooms(page: Page, roomName: string) {
   }
 }
 
-export async function getRoomCount(page: Page, roomName: string) {
-  let count = 0;
-  for await (const _ of findRooms(page, roomName)) { 
-      count++;
-  }
-  return count;
-}
+// export async function getRoomCount(page: Page, roomName: string) {
+//   let count = 0;
+//   for await (const _ of findRooms(page, roomName)) { 
+//       count++;
+//   }
+//   return count;
+// }
 
-export async function getExactlyOneRoom(page: Page, roomName: string, retries = 10) {
+export async function getRooms(page: Page, roomName: string, retries = 10) {
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;

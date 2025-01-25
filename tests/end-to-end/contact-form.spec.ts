@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';  
 import { loadHomepage } from '../../utils/playwright/home';
 import { loadJsonTestConfig } from '../../utils/domain/json-loader';
-import { findMessages, getMessageCount } from '../../utils/playwright/message-list';
+import { getMessages } from '../../utils/playwright/message-list';
 import { newAdminSession } from '../../utils/playwright/admin-session';
 import { ContactMessage } from '../../test-data/types/contact-message';
 import { BadEmail } from '../../test-data/types/bad-email';
@@ -37,14 +37,18 @@ test.describe.parallel('Contact Form', () => {
         test(`Check message arrived exactly once from: ${message.contactName}`, async ({ page, baseURL }) => {
             //Count messages from this contact
             await newAdminSession(page, baseURL);
-            expect(await getMessageCount(page, message.contactName, message.contactSubject)).toBe(1);
+
+            await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
         });
 
         test(`Check content of message from: ${message.contactName}`, async ({ page, baseURL }) => {
             await newAdminSession(page, baseURL);
-            for await (const item of findMessages(page, message.contactName, message.contactSubject)) { 
+
+            const messages = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+
+            if (messages.length === 1) {
                 // Click on the message
-                await item.row.click();
+                await messages[0].row.click();
 
                 // Check that a message is displayed
                 const messageLocator = page.getByTestId('message');
@@ -64,10 +68,11 @@ test.describe.parallel('Contact Form', () => {
 
         test(`Delete message from: ${message.contactName}`, async ({ page, baseURL }) => {
             await newAdminSession(page, baseURL);
-            for await (const item of findMessages(page, message.contactName, message.contactSubject)) { 
 
-                // Delete the message
-                await item.deleteIcon.click();
+            const messages = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+
+            if (messages.length === 1) {
+                await messages[0].deleteIcon.click();
             }
         });
     });

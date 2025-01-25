@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test';  
 
-export async function* findMessages(page: Page, name: string, subject: string) {
+async function* findMessages(page: Page, name: string, subject: string) {
     
     // Should this be here?
     await expect(page.locator(`//a[@href="#/admin/messages"]`)).toBeVisible();
@@ -21,15 +21,15 @@ export async function* findMessages(page: Page, name: string, subject: string) {
     }
 }
 
-export async function getMessageCount(page: Page, name: string, subject: string) {
-    let count = 0;
-    for await (const _ of findMessages(page, name, subject)) { 
-        count++;
-    }
-    return count;
-}
+// export async function getMessageCount(page: Page, name: string, subject: string) {
+//     let count = 0;
+//     for await (const _ of findMessages(page, name, subject)) { 
+//         count++;
+//     }
+//     return count;
+// }
 
-export async function getExactlyOneMessage(page: Page, name: string, subject: string, retries = 10, messageCount = 1, strict = true) {
+export async function getMessages(page: Page, name: string, subject: string, retries = 10, messageCount = 1, strict = true) {
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
