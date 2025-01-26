@@ -20,11 +20,27 @@ Performance testing has been touched on but reproduction detail is light and exa
 - **Playwright** - see [Installing Playwright](https://playwright.dev/docs/intro#installing-playwright) 
 - **Target Web Site** - [Restful Booker Platform](https://automationintesting.online/) available or a locally hosted version.  Source: [Github Repo](https://github.com/mwinteringham/restful-booker-platform) 
 
-## Running
+## Running Locally
 
+### First time configuration
+
+Create a .env file and set values (shown in the banner) for ADMIN_USERNAME and ADMIN_PASSWORD
+
+### Every time
 <pre>
 $ npx playwright test
 </pre>
+
+## Running gitlab action
+
+### First time configuration
+
+1. Fork the repo
+2. Add ADMIN_USERNAME and ADMIN_PASSWORD (values shown in the banner) as environment repository secrets
+
+### Every time
+
+Push a change to run the pipeline
 
 ## Directory Structure
 
