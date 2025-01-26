@@ -24,13 +24,17 @@ Performance testing has been touched on but reproduction detail is light and exa
 
 ### First time configuration
 
-Create a .env file and set values (shown in the banner) for ADMIN_USERNAME and ADMIN_PASSWORD
-To run against an different site you can also set BASE_URL in .env
+1. git clone https://github.com/matban666/restful-booker-playwright.git
+2. cd restful-booker-playwright
+3. nvm install 23.6.0
+4. nvm use 23.6.0
+5. npm install
+6. Create a .env file and set values (shown in the banner) for ADMIN_USERNAME and ADMIN_PASSWORD
+7. To run against an different site you can also set BASE_URL in .env
 
 ### Every time
-<pre>
-$ npx playwright test
-</pre>
+
+1. npx playwright test
 
 ## Running gitlab action
 
@@ -41,7 +45,7 @@ $ npx playwright test
 
 ### Every time
 
-Push a change to run the pipeline
+1. Push a change to run the pipeline
 
 ## Directory Structure
 
