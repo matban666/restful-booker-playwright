@@ -39,7 +39,7 @@ Performance testing has been touched on but reproduction detail is light and exa
 
 ### Expected Output
 
-Currently 71 tests shoul run.  69 should pass and 2 should fail (Copyright date checks).
+Currently 71 tests shoul run.  69 should pass and 2 should fail (Expected copyright date checks).
 
 If the test fail midway it may be necessary to delete any leftover messages and rooms from the admin page.  I had intended to write a global teardown using the rest API to clean up completely but didn't have time.
 
