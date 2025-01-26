@@ -25,6 +25,7 @@ Performance testing has been touched on but reproduction detail is light and exa
 ### First time configuration
 
 Create a .env file and set values (shown in the banner) for ADMIN_USERNAME and ADMIN_PASSWORD
+To run against an different site you can also set BASE_URL in .env
 
 ### Every time
 <pre>
@@ -80,7 +81,8 @@ Push a change to run the pipeline
 │       └── ...
 ├── restful-booker-platform-bugs.yaml
 ├── playwright.config.ts
-└── package.json
+├── package.json
+└── .env
 </pre>
 
 ## Directory Content
