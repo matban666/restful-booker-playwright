@@ -3,7 +3,7 @@ import { expect, type Page, type Locator } from '@playwright/test';
 
 async function* findRooms(page: Page, roomName: string) {
     
-  // Not sure if this should be here
+
   await expect(page.getByRole('link', { name: 'Admin panel' })).toBeVisible();
   await page.getByRole('link', { name: 'Admin panel' }).click();
   
@@ -24,24 +24,15 @@ async function* findRooms(page: Page, roomName: string) {
   }
 }
 
-// export async function getRoomCount(page: Page, roomName: string) {
-//   let count = 0;
-//   for await (const _ of findRooms(page, roomName)) { 
-//       count++;
-//   }
-//   return count;
-// }
-
-export async function getRooms(page: Page, roomName: string, retries = 10) {
+export async function getRooms(page: Page, roomName: string, retries = 10, expectedCount = 1, strict = true) {
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundBooking: any = null;
+        let foundItems: any[] = [];
 
         try {
             for await (const matchingBooking of findRooms(page, roomName)) { 
-                
-                foundBooking = matchingBooking;
+                foundItems.push(matchingBooking);
                 count++;
             }
         } catch (error) {
@@ -49,20 +40,20 @@ export async function getRooms(page: Page, roomName: string, retries = 10) {
             console.log(error);
         }
 
-        if (count === 1) {
-            expect(foundBooking).not.toBeNull();
-        return foundBooking;
+        if (strict && count > expectedCount) {
+            throw new Error(`Found more than one booking for ${roomName}`);
         }
 
-        if (count > 1) {
-            throw new Error(`Found more than one booking for ${roomName}`);
+        if (count >= expectedCount) {
+            expect(foundItems[-1]).not.toBeNull();
+            return foundItems;
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneRoom for ${roomName}`);
         await page.waitForTimeout(50); 
     }
 
-    throw new Error(`Failed to find room ${roomName}`);
+    return null;
 }
 
 

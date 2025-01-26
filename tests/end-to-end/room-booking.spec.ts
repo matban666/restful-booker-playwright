@@ -11,6 +11,7 @@ import { type Room } from '../../test-data/types/room';
 import { type Booking } from '../../test-data/types/booking';
 import { changeMonth } from '../../utils/playwright/calendar';
 import { Calendar } from '../../utils/domain/calendar';
+import exp from 'constants';
 
 
 //Booking tests are serial because they depend on each other
@@ -31,14 +32,18 @@ test.describe.serial('Booking Tests', () => {
       await page.getByRole('button', { name: 'Create' }).click();
 
       // Check the room is now in the list
-      const roomListItem = await getRooms(page, room.roomName);
+      const roomListItem = await getRooms(page, room.roomName, 10, 1, true);
 
-      // Click on the room and fill in the extra details
-      await roomListItem.row.click();
-      await page.getByRole('button', { name: 'Edit' }).click();
-      await page.getByLabel('Description').fill(room.description);
-      await page.getByLabel('Image:').fill(room.image);
-      await page.getByRole('button', { name: 'Update' }).click();
+      expect(roomListItem).not.toBeNull();
+
+      if (roomListItem !== null) {
+        // Click on the room and fill in the extra details
+        await roomListItem[0].row.click();
+        await page.getByRole('button', { name: 'Edit' }).click();
+        await page.getByLabel('Description').fill(room.description);
+        await page.getByLabel('Image:').fill(room.image);
+        await page.getByRole('button', { name: 'Update' }).click();
+      }
     });
   });
 
@@ -129,35 +134,42 @@ test.describe.serial('Booking Tests', () => {
 
         const matchingMessages = await getMessages(page, sender, subject, 10, messageCount);
 
-        console.log(`Found ${matchingMessages.length} messages for ${subject}`);
+        expect(matchingMessages).not.toBe(null);
 
         let count = 0;
 
-        for (const message of matchingMessages) {
-          await message.row.click();
+        if (matchingMessages !== null && matchingMessages.length > 0) {
 
-          // Check that a message is visible
-          const messageLocator = page.getByTestId('message');
-          await expect(messageLocator).toBeVisible();
+          console.log(`Found ${matchingMessages.length} messages for ${subject}`);
 
-          // Extract the message details from the page
-          // I don't like using indexes but there is very little else to go on
-          const currentMessageFrom = (await messageLocator.locator(`//div[1]/div[1]/p`).innerText()).slice(6);
-          const currentMessagePhone = (await messageLocator.locator(`//div[1]/div[2]/p`).innerText()).slice(7);
-          const currentMessageEmail = (await messageLocator.locator(`//div[2]/div[1]/p`).innerText()).slice(7);
-          const currentMessageSubject = await messageLocator.locator(`//div[3]//span`).textContent();
-          const currentMessageMessage = await messageLocator.locator(`//div[4]//p`).textContent();
 
-          // Is the the message we are expecting?
-          for (const expectedMessageIndex in expectedMessages) {
-            //TODO: This is a bit clumsy and not effecient - We could perpahs use sets or hashs
-            const expectedMessage = expectedMessages[expectedMessageIndex];
-            if (currentMessageFrom === sender && currentMessagePhone === expectedMessage.phone && currentMessageEmail === expectedMessage.email && currentMessageSubject === subject && currentMessageMessage === expectedMessage.expectedMessage) {
-              count++;
-              break;
+
+          for (const message of matchingMessages) {
+            await message.row.click();
+
+            // Check that a message is visible
+            const messageLocator = page.getByTestId('message');
+            await expect(messageLocator).toBeVisible();
+
+            // Extract the message details from the page
+            // I don't like using indexes but there is very little else to go on
+            const currentMessageFrom = (await messageLocator.locator(`//div[1]/div[1]/p`).innerText()).slice(6);
+            const currentMessagePhone = (await messageLocator.locator(`//div[1]/div[2]/p`).innerText()).slice(7);
+            const currentMessageEmail = (await messageLocator.locator(`//div[2]/div[1]/p`).innerText()).slice(7);
+            const currentMessageSubject = await messageLocator.locator(`//div[3]//span`).textContent();
+            const currentMessageMessage = await messageLocator.locator(`//div[4]//p`).textContent();
+
+            // Is the the message we are expecting?
+            for (const expectedMessageIndex in expectedMessages) {
+              //TODO: This is a bit clumsy and not effecient - We could perpahs use sets or hashs
+              const expectedMessage = expectedMessages[expectedMessageIndex];
+              if (currentMessageFrom === sender && currentMessagePhone === expectedMessage.phone && currentMessageEmail === expectedMessage.email && currentMessageSubject === subject && currentMessageMessage === expectedMessage.expectedMessage) {
+                count++;
+                break;
+              }
             }
+            await page.getByRole('button', { name: 'Close' }).click();
           }
-          await page.getByRole('button', { name: 'Close' }).click();
         }
 
         // The room name is not shown in the message or message list so we can't check it without referencing the booking on the room/report page
@@ -177,26 +189,32 @@ test.describe.serial('Booking Tests', () => {
         await resumeAdminSession(page);
 
         // Get the room
-        const room = await getRooms(page, booking.roomName);
+        const roomListItems = await getRooms(page, booking.roomName);
 
-        expect(room).not.toBeNull();
+        expect(roomListItems).not.toBeNull();
 
-        // Click on the room
-        await room.row.click();
+        if (roomListItems !== null && roomListItems.length > 0) {
+          // Click on the room
+          await roomListItems[0].row.click();
 
-        // Find the booking
-        const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
-        const bookingRow = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+          // Find the booking
+          const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
+          const bookingList = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
 
-        expect(room).not.toBeNull();
+          expect(bookingList).not.toBeNull();
 
-        // Edit the booking
-        await bookingRow.editIcon.click();
+          if (bookingList !== null && bookingList.length > 0) {
+          // Edit the booking
+            await bookingList[0].editIcon.click();
 
-        //TODO: Actually edit the booking, this would requre subsequent tests to check the changes so it needs some thought
+            //TODO: Actually edit the booking, this would requre subsequent tests to check the changes so it needs some thought
 
-        await page.locator('//span[contains(@class, "confirmBookingEdit")]').click();
+            await page.locator('//span[contains(@class, "confirmBookingEdit")]').click();
+          }
 
+
+
+        }
       });
     }
   });
@@ -213,23 +231,34 @@ test.describe.serial('Booking Tests', () => {
       test(`Delete booking: ${booking.description}`, async ({ page, baseURL }) => {
         await newAdminSession(page, baseURL);
 
-        const room = await getRooms(page, booking.roomName);
+        // Get the room
+        const roomListItems = await getRooms(page, booking.roomName);
 
-        console.log(`Room Name: ${booking.roomName}`);
+        expect(roomListItems).not.toBeNull();
 
-        await room.row.click();
+        if (roomListItems !== null && roomListItems.length > 0) {
+          await roomListItems[0].row.click();
 
-        const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
+          const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
 
-        console.log(`Booking: ${booking.firstname} ${booking.lastname} ${checkInString} ${checkOutString}`);
+          console.log(`Booking: ${booking.firstname} ${booking.lastname} ${checkInString} ${checkOutString}`);
 
-        const bookingItem = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+          const bookingList = await getBookings(page, booking.firstname, booking.lastname, checkInString, checkOutString);
 
-        // Check the booking is there
-        await bookingItem.deleteIcon.click();
+          expect(bookingList).not.toBeNull();
 
-        //TODO: Check the booking is gone
-        //await isBookingNotThere(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+          if (bookingList !== null && bookingList.length > 0) {
+            await bookingList[0].deleteIcon.click();
+
+            //TODO: Actually edit the booking, this would requre subsequent tests to check the changes so it needs some thought
+
+            await page.locator('//span[contains(@class, "confirmBookingEdit")]').click();
+          }
+
+
+          //TODO: Check the booking is gone
+          //await isBookingNotThere(page, booking.firstname, booking.lastname, checkInString, checkOutString);
+        }
       });
     }
   });
@@ -257,12 +286,14 @@ test.describe.serial('Booking Tests', () => {
         // correspond to a specific booking
         for (const expectedMessageIndex in expectedMessages) {
 
-          const matchingMessages = await getMessages(page, sender, subject, 10, 1, false);
+          const messageList = await getMessages(page, sender, subject, 10, 1, false);
 
-          console.log(`Found ${matchingMessages.length} messages from ${sender} for ${subject}`);
+          expect(messageList).not.toBeNull();
 
-        
-          await matchingMessages[0].deleteIcon.click();
+          if (messageList !== null && messageList.length > 0) {
+            console.log(`Found ${messageList.length} messages from ${sender} for ${subject}`);
+            await messageList[0].deleteIcon.click();
+          }
         }
 
         // The room name is not shown in the message or message list so we can't check it without referencing the booking on the room/report page
@@ -281,14 +312,18 @@ test.describe.serial('Booking Tests', () => {
       await expect(page.getByRole('link', { name: 'Rooms' })).toBeVisible();
 
       // Get the room from the list
-      const roomItem = await getRooms(page, room.roomName);
+      const roomsInList = await getRooms(page, room.roomName);
 
-      // Delete the room
-      if (roomItem) {
-        await roomItem.deleteIcon.click();
+      expect(roomsInList).not.toBeNull();
+
+      if (roomsInList !== null) {
+        console.log(`Room Count: ${roomsInList.length}`);
+
+        if (roomsInList.length > 0) {
+          // Delete the room
+          await roomsInList[0].deleteIcon.click();
+        }
       }
-
-      //TODO: Confim it has gone
     });
   });
 });

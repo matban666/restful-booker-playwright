@@ -26,25 +26,16 @@ async function* findBookings(page: Page, bookingFirstname, bookingLastname, book
     }
 }
 
-// export async function getBookingCount(page, firstname, lastname, checkInString, checkOutString) {
-//     let count = 0;
-//     for await (const _ of findBookings(page, firstname, lastname, checkInString, checkOutString)) { 
-//         count++;
-//     }
-//     return count;
-// }
-
-export async function getBookings(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
+export async function getBookings(page, firstname, lastname, checkInString, checkOutString, retries = 10, expectedCount = 1, strict = true) {
 
     // TODO: Report how long this actually takes
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundBooking: any = null;
+        let foundItems: any[] = [];
 
         try {
-            for await (const matchingBooking of findBookings(page, firstname, lastname, checkInString, checkOutString)) { 
-                
-                foundBooking = matchingBooking;
+            for await (const matchingBooking of findBookings(page, firstname, lastname, checkInString, checkOutString)) {  
+                foundItems.push(matchingBooking);
                 count++;
             }
         } catch (error) {
@@ -52,37 +43,20 @@ export async function getBookings(page, firstname, lastname, checkInString, chec
             console.log(error);
         }
 
-        if (count === 1) {
-            expect(foundBooking).not.toBeNull();
-        return foundBooking;
+        if (strict && count > expectedCount) {
+            throw new Error(`Found more than one booking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
         }
 
-        if (count > 1) {
-            throw new Error(`Found more than one booking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
+        if (count >= expectedCount) {
+            expect(foundItems[-1]).not.toBeNull();
+            return foundItems;
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneBooking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
         await page.waitForTimeout(50); 
     }
 
-    throw new Error(`Failed to find any bookings for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
+    return null;
 }
 
-
-// export async function isBookingNotThere(page, firstname, lastname, checkInString, checkOutString, retries = 10) {
-
-//     for (let retry = 0; retry < retries; retry++) {
-
-//         const count = await getBookingCount(page, firstname, lastname, checkInString, checkOutString);
-
-//         if (count === 0) {
-//             return true;
-//         }
-
-//         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneBooking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
-//         await page.waitForTimeout(50); 
-//     }
-
-//     throw new Error(`Booking is still there: ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
-// }
 

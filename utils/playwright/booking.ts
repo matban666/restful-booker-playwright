@@ -9,8 +9,6 @@ export async function bookRoom(page: Page, booking: Booking) {
     
     await page.locator(`//div[img[@alt="Preview image of room${booking.roomName}"]]/following-sibling::div/button`).click();
   
-    await page.locator(`//div[img[@alt="Preview image of room${booking.roomName}"]]/parent::*/parent::*//div[@class="rbc-date-cell" and button[text()="26"]]`).scrollIntoViewIfNeeded();
-  
     await selectDates(calendarLocator, booking.monthOffset, booking.checkIn, booking.checkOut, booking.expectedSuccess);
   
   

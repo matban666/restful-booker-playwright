@@ -19,9 +19,12 @@ export async function checkCalendarCell(page: Page, day: string) {
 
 export async function selectDates(calendarLocator: Locator, monthOffset: number, checkIn: number, checkOut: number, expectedSuccess: boolean) {
     await changeMonth(calendarLocator, monthOffset);
+
+    await calendarLocator.locator(`//div[contains(@class, 'rbc-row-bg')]`).last().scrollIntoViewIfNeeded();
     
     const checkInDay = checkIn.toString().padStart(2, '0');
-    const childDiv = calendarLocator.locator(`//div[@class="rbc-date-cell" and button[text()="${checkInDay}"]]`);
+
+    const childDiv = calendarLocator.locator(`//div[contains(@class, 'rbc-date-cell') and not(contains(@class, 'rbc-off-range')) and button[text()="${checkInDay}"]]`);
   
     const viewportBox = await childDiv.boundingBox();
 
@@ -54,7 +57,7 @@ export async function selectDates(calendarLocator: Locator, monthOffset: number,
     });
   
     const lastDay = (checkOut - 1).toString().padStart(2, '0');
-    const childDiv2 = calendarLocator.locator(`//div[@class="rbc-date-cell" and button[text()="${lastDay}"]]`);
+    const childDiv2 = calendarLocator.locator(`//div[contains(@class, 'rbc-date-cell') and not(contains(@class, 'rbc-off-range')) and button[text()="${lastDay}"]]`);
     const viewportBox2 = await childDiv2.boundingBox();
 
     expect(viewportBox2).not.toBeNull();
@@ -85,6 +88,8 @@ export async function selectDates(calendarLocator: Locator, monthOffset: number,
 
     //Selection is always allowed
     await expect(calendarLocator.locator(`//div[@class="rbc-event-content"][contains(text(), 'night')]`).first()).toBeVisible();
+
+    //TODO: Check price is correct
 
     // Is the booking shown om the calendar? 
     const unavailableSelector = `//div[@class="rbc-event-content"][text()='Unavailable']`;

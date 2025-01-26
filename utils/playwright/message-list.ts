@@ -21,24 +21,15 @@ async function* findMessages(page: Page, name: string, subject: string) {
     }
 }
 
-// export async function getMessageCount(page: Page, name: string, subject: string) {
-//     let count = 0;
-//     for await (const _ of findMessages(page, name, subject)) { 
-//         count++;
-//     }
-//     return count;
-// }
-
-export async function getMessages(page: Page, name: string, subject: string, retries = 10, messageCount = 1, strict = true) {
+export async function getMessages(page: Page, name: string, subject: string, retries = 10, expectedCount = 1, strict = true) {
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundMessages: any[] = [];
+        let foundItems: any[] = [];
 
         try {
             for await (const matchingBooking of findMessages(page, name, subject)) { 
-                
-                foundMessages.push(matchingBooking);
+                foundItems.push(matchingBooking);
                 count++;
             }
         } catch (error) {
@@ -46,20 +37,20 @@ export async function getMessages(page: Page, name: string, subject: string, ret
             console.log(error);
         }
 
-        if (strict && count > messageCount) {
-            throw new Error(`Found more than ${messageCount} message(s) for ${name} ${subject}`);
+        if (strict && count > expectedCount) {
+            throw new Error(`Found more than ${expectedCount} message(s) for ${name} ${subject}`);
         }
 
-        if (count >= messageCount) {
-            expect(foundMessages[-1]).not.toBeNull();
-            return foundMessages;
+        if (count >= expectedCount) {
+            expect(foundItems[-1]).not.toBeNull();
+            return foundItems;
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneMessage for ${name} ${subject}`);
         await page.waitForTimeout(50); 
     }
 
-    throw new Error(`Failed to find any messages for ${name} ${subject}`);
+    return null;
 }
 
 

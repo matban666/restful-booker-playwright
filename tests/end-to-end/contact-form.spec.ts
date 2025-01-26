@@ -5,6 +5,7 @@ import { getMessages } from '../../utils/playwright/message-list';
 import { newAdminSession } from '../../utils/playwright/admin-session';
 import { ContactMessage } from '../../test-data/types/contact-message';
 import { BadEmail } from '../../test-data/types/bad-email';
+import exp from 'constants';
 
   
 test.describe.parallel('Contact Form', () => {
@@ -44,11 +45,13 @@ test.describe.parallel('Contact Form', () => {
         test(`Check content of message from: ${message.contactName}`, async ({ page, baseURL }) => {
             await newAdminSession(page, baseURL);
 
-            const messages = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+            const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
 
-            if (messages.length === 1) {
+            expect(messageList).not.toBeNull();
+
+            if (messageList !== null && messageList.length === 1) {
                 // Click on the message
-                await messages[0].row.click();
+                await messageList[0].row.click();
 
                 // Check that a message is displayed
                 const messageLocator = page.getByTestId('message');
@@ -69,10 +72,12 @@ test.describe.parallel('Contact Form', () => {
         test(`Delete message from: ${message.contactName}`, async ({ page, baseURL }) => {
             await newAdminSession(page, baseURL);
 
-            const messages = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+            const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
 
-            if (messages.length === 1) {
-                await messages[0].deleteIcon.click();
+            expect(messageList).not.toBeNull();
+
+            if (messageList !== null && messageList.length === 1) {
+                await messageList[0].deleteIcon.click();
             }
         });
     });
