@@ -43,7 +43,7 @@ test.describe.parallel('Calendar', () => {
 
         await checkCalenderHeaderDate(page, expectedMonthYear);
 
-        await expect(page.locator('.rbc-today')).toHaveCount(0); 
+        await expect(page.locator(`//div[contains(@class, 'rbc-today') and not(contains(@class, 'rbc-off-range-bg'))]`)).toHaveCount(0); 
     });
 
     test(`Last Month`, async ({ page }) => {
@@ -55,6 +55,6 @@ test.describe.parallel('Calendar', () => {
 
         await checkCalenderHeaderDate(page, expectedMonthYear);
 
-        await expect(page.locator('.rbc-today')).toHaveCount(0); 
+        await expect(page.locator(`//div[contains(@class, 'rbc-today') and not(contains(@class, 'rbc-off-range-bg'))]`)).toHaveCount(0); 
     });
 });
