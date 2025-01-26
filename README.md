@@ -1,5 +1,26 @@
 # Restful Booker Playwright Test
 
+## Overview
+Plawright test suite for the Restfuk Booker Platform found at https://automationintesting.online/
+
+## Pre-requisites
+Node.js - tested with version 23.6.0
+Playright - see https://playwright.dev/docs/intro#installing-playwright
+
+## Directory Structure
+
+├── tests
+│   ├── end-to-end
+│   │   ├──branding.spec.ts
+│   │   ├──contact-form.spec.ts
+│   │   └──room-booking.spec.ts
+│   ├── admin-navigation.spec.ts
+│   ├── calendar.spec.ts
+│   └── static-content.spec.ts
+├── playwright.config.ts
+└── package.json
+
+
 ## Todo
 Admin credentials to be stored in a secure location
 Tidy room-booking.spec.ts
