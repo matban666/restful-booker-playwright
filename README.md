@@ -3,11 +3,12 @@
 ## Overview
 Playwright test suite for the Restful Booker Platform found at https://automationintesting.online/
 
-The overall concept is for the testing to be data driven.  Test data is provided in json files which is iterated over by the tests.  Test code is orgnised so that common functionaluty is factored out into modules. This results in almost no code duplication and ease of adding new tests cases just by adding them to the json or adding/modifying test usign shared components. 
+The overall concept is for the testing to be data driven.  Test data is provided in json files which is iterated over by the tests.  Test code is orgnised so that common functionaluty is factored out into modules. This results in almost no code duplication and ease of adding new tests cases just by adding them to the json or adding/modifying test usign shared components.  Overall the tests can be run in parallel but the end-to-end test are serial as the tests are order dependant and the data is shared to an extent.  Because of the live nature of the target site the suite generates all of its own artefacts such as rooms/bookings/messages and deletes them afterwards.  This prevents it from messing up other peples tests and hopefully other people from messing up these tests.  It does not take any absolute unfiltered counts or attempt to delete anything that it hasn't created.  The focus has been on end-to-end testing.  These could be complemented by more isolated feature testing.  Such isolated tests would requre their own data which wouldn't be to hard to add using the existing mechanisms.  The suite has been tested against a local hosted version too but in exatly the same way as the live version.  Additional staging only tests could be added to test the site in a more comprehensive manner, for example deleting all known bookings/messages and ensuring that the assiciated lists are completely empty.  Performance testing has been touched on but reproduction detail is light and exact timings have not been given.  No load testing has been carried out.  Accessibility has been touched on.  Securty has not been tested other than admin pages re-directing to the login page when not logged in.
 
 ## Pre-requisites
 - **Node.js** - tested with version 23.6.0
 - **Playwright** - see https://playwright.dev/docs/intro#installing-playwright
+- **Targer Web Site** - https://automationintesting.online/ available or a locally hosted version.  Source: https://github.com/mwinteringham/restful-booker-platform
 
 ## Directory Structure
 
@@ -42,6 +43,8 @@ The overall concept is for the testing to be data driven.  Test data is provided
 └── package.json
 </pre>
 
+## Directory Content
+
 - **test-data** - contains json files containing data for test that require different permeatations
 - **test-data/types** - contain interfaces for each of the files
 - **tests** - contains tests that test an isolates part of the site such as static items and navigation
@@ -50,7 +53,7 @@ The overall concept is for the testing to be data driven.  Test data is provided
 - **utils/domain** - contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
 - **utils/playwright** - contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
 
-### Tests
+## Feature Tests
 
 **static-content-spec.ts** - These tests iterate through the pages provided in pages.json test to ensure they all have the footer and that the footer links work, one test deliberately fails on the copyright being shown as 24 and not 25.
 
@@ -58,7 +61,7 @@ The overall concept is for the testing to be data driven.  Test data is provided
 
 **calendar.spec.ts** - This checks that the month and year are correct and today is highlighted.  It checks that the month navigation buttons work correctly.
 
-### End To End Tests
+## End To End Tests
 
 branding.spec.ts - This tests that the website can be rebranded with branding supplied in branding-alternate.json.  It reverts back to branding-default.json and checks that it has been applied.
 
@@ -72,25 +75,25 @@ An example of bugs observed in the Restful Booker Platform can be found in restf
 
 
 ## Todo
-Admin credentials to be stored in a secure location
-Tidy room-booking.spec.ts
-Room booking is also a bit flaky
-Make sure there is enoug info in the errors
-Switch between staging and production
-Get the github action working
+- Admin credentials to be stored in a secure location
+- Tidy room-booking.spec.ts
+- Room booking is also a bit flaky
+- Make sure there is enoug info in the errors
+- Switch between staging and production
+- Get the github action working
 
 ## Known Missing Tests
-Check price for booking is correct
-Create room with negative price
-Update room details and check the changes are reflected
-Check that message has been read
-New message count
-Book directly on report calendar
-REST backend tests
-Cookie policy link on privacy policy page is broken bug #15
-Invalid credential for admin login
-More valid/invalid input tests for contact form
-More valid/invalid input tests for booking form
+- Check price for booking is correct
+- Create room with negative price
+- Update room details and check the changes are reflected
+- Check that message has been read
+- New message count
+- Book directly on report calendar
+- REST backend tests
+- Cookie policy link on privacy policy page is broken bug #15
+- Invalid credential for admin login
+- More valid/invalid input tests for contact form
+- More valid/invalid input tests for booking form
 
 ## Tests to add if bug fixed
-Cancel button on room edit
+- Cancel button on room edit
