@@ -1,6 +1,6 @@
 - id: 1
-  related:
-  classification: NonFunctional, Accessibility
+  related-ids:
+  classification: NonFunctional (Accessibility)
   description: Does not adapt well to small screens so booking by dragging on the calendar is very tricky
   browsers: All
   severity: High
@@ -17,8 +17,8 @@
   related-tests:
 
 - id: 2
-  related: 1
-  classification: 
+  related-ids: 1
+  classification: NonFunctional
   description: Calendar is not operable by keyboard
   browsers: All
   severity: Low
@@ -36,8 +36,8 @@
   related-tests:
 
 - id: 3
-  related:
-  classification: Functional
+  related-ids:
+  classification: NonFunctional
   description: You can create multiple rooms with the same name
   browsers: All
   severity: Medium
@@ -54,7 +54,7 @@
   related-tests:
 
 - id: 4
-  related:
+  related-ids:
   classification: NonFunctional
   description: Room number can be a name or number but UI suggests it is a number
   browsers: All
@@ -70,7 +70,7 @@
   related-tests:
 
 - id: 5
-  related:
+  related-ids:
   classification: Functional
   description: You can book a room in the past
   browsers: All
@@ -89,8 +89,8 @@
   related-tests:
 
 - id: 6
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: Can't book beyond the current visible calendar dates
   browsers: All
   severity: Medium
@@ -107,7 +107,7 @@
   related-tests:
 
 - id: 7
-  related:
+  related-ids:
   classification: NonFunctional
   description: Multiple room booking calendars are visible at once
   browsers: All
@@ -124,7 +124,7 @@
   related-tests:
 
 - id: 8
-  related: 9
+  related-ids: 9
   classification: Functional
   description: Booking is made for an extra night
   browsers: All
@@ -150,7 +150,7 @@
   related-tests:
 
 - id: 9
-  related: 8
+  related-ids: 8
   classification: Functional
   description: Booking cannot start on the check out day of another booking (related to previous bug)
   browsers: All
@@ -169,8 +169,8 @@
   related-tests:
 
 - id: 10
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: Contact errors are not consistent in terms of capitalisation and full stops
   browsers: All
   severity: Low
@@ -188,8 +188,8 @@
   related-tests:
 
 - id: 11
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: Branding does not allow apostrophes or dashes
   browsers: All
   severity: Medium
@@ -207,8 +207,8 @@
   related-tests:
 
 - id: 12
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: Copyright date is not up to date
   browsers: All
   severity: Low
@@ -224,7 +224,7 @@
   related-tests:
 
 - id: 13
-  related:
+  related-ids:
   classification: NonFunctional
   description: Enter does not submit the login form
   browsers: All
@@ -242,40 +242,43 @@
   related-tests:
 
 - id: 14
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: Cookie and Privacy pages do not have navigation links back to the home page
   browsers: All
-  severity: 
+  severity: Low
   severity-justification:
   reproduction: 
     steps:
-      - 
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
+      - Go to https://automationintesting.online
+      - Click on "Cookie Policy" or "Privacy Policy"
+    expected: Link to the home page
+    actual: No link to the home page
+  workaround: Use browser back button
+  recommendation: Add a link back to the home page
   related-tests:
 
 - id: 15
-  related:
-  classification: 
+  related-ids:
+  classification: Functional
   description: Cookie policy link on privacy policy page is broken
   browsers: All
   severity: Medium
-  severity-justification: 
+  severity-justification: Legal requirement to display Cookie Policy
   reproduction: 
     steps:
-      - 
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
+      - Go to: https://automationintesting.online/
+      - Click on "Privacy Policy"
+      - Click on "Cookie-Policy" link within the text
+    expected: Cookie policy page to load
+    actual: A blank pafe is loaded (https://automationintesting.online/#/cookiepolicy)
+  workaround: Use the Cookie Policy link in the footer
+  recommendation: Link should point to "https://automationintesting.online/#/cookie"
   related-tests:
 
 - id: 16
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional (Accessibility)
   description: Hotel Name is not displayed as text on the home page
   browsers: All
   severity: Medium
@@ -290,8 +293,8 @@
   related-tests:
 
 - id: 17
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: No favicon
   browsers: All
   severity: Medium
@@ -306,8 +309,8 @@
   related-tests:
 
 - id: 18
-  related:
-  classification: 
+  related-ids:
+  classification: Functional
   description: Relative path is not accepted for branding
   browsers: All
   severity: 
@@ -326,65 +329,105 @@
   related-tests:
 
 - id: 19
-  related:
-  classification: 
+  related-ids:
+  classification: NonFunctional
   description: No cancel on room details page
   browsers: All
-  severity: 
-  severity-justification:
+  severity: Low
+  severity-justification: Nice to have
   reproduction: 
     steps:
       - Go to https://automationintesting.online/#/admin and log in
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
+      - Click on a room in the rooms list
+    expected: A cancel/back/close button
+    actual: No cancel/back/close button
+  workaround: Click on 'Rooms'
+  recommendation: Add a cancel/back/close button
   related-tests:
 
 - id: 20
-  related:
-  classification: 
-  description: List edit icon inconsistency
-  browsers: All
-  severity: 
-  severity-justification:
-  reproduction: 
-    steps:
-      - 
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
-  related-tests:
-
-- id: 21
-  related:
-  classification: 
+  related-ids:
+  classification: Non Functional
   description: Booking message does not say which room, although it can be looked up via the room pages or the report
   browsers: All
   severity: 
   severity-justification:
   reproduction: 
     steps:
-      - 
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
+      - Ensere a booking has been made
+      - Go to https://automationintesting.online/#/admin and log in
+      - Click on the messages icon
+      - Clcik one with the tile "You have a new booking!"
+    expected: Booking message to say which room was booked
+    actual: Room is not mentioned
+  workaround: Go via the room page or the report
+  recommendation: Include the room name in the booking message and/or subject
   related-tests:
 
-- id: 22
-  related:
-  classification: 
-  description: On the room page if you edit a room, then click delete, you cannot delete it
+- id: 21
+  related-ids: 22, 23, 24
+  classification: NonFunctional
+  description: Performance (Rebranding)
   browsers: All
-  severity: 
-  severity-justification:
+  severity: High
+  severity-justification: May not scale well with more users
   reproduction: 
     steps:
-      - 
-    expected: 
-    actual: 
-  workaround: 
-  recommendation: 
-  related-tests:
+      - Go to https://automationintesting.online/#/admin and log in
+      - Click on "Branding"
+      - Update the details with inclding a new logo
+      - Click "Submit"
+      - Immediately load https://automationintesting.online/
+    expected: Pages to load quickly with new branding
+    actual: Sometimes the old branding is displayed
+  workaround: Hit refresh
+  recommendation: Investigate site Performance further
+  related-tests: branding.spec.ts
+
+- id: 22
+  related-ids: 21, 23, 24
+  classification: NonFunctional
+  description: Performance (List refresh)
+  browsers: All
+  severity: High
+  severity-justification: May not scale well with more users
+  reproduction: 
+    steps:
+      - Perform actions that cause room/message/bookings lists to change such as creating bookings or deleting entries
+    expected: Lists to update
+    actual: Sometimes the list does not update quickly
+  workaround: Hit refresh
+  recommendation: Investigate site Performance further
+  related-tests: 
+
+- id: 23
+  related-ids: 21, 22, 24
+  classification: NonFunctional
+  description: Performance (Components)
+  browsers: All
+  severity: High
+  severity-justification: May not scale well with more users
+  reproduction: 
+    steps:
+      - Browse the site and perform actions
+    expected: Pages and comopnents to load quickly without error
+    actual: Sometimes compnents do not update quickly, sometimes errors are shown temorarily
+  workaround: Hit refresh
+  recommendation: Investigate site Performance further
+  related-tests: 
+
+- id: 24
+  related-ids: 21, 22, 23
+  classification: NonFunctional
+  description: Performance (REST Api)
+  browsers: All
+  severity: High
+  severity-justification: May not scale well with more users
+  reproduction: 
+    steps:
+      - Browse the site and perform actions with developer tools open
+    expected: Pages and comopnents to load quickly without error
+    actual: Sometimes rest calls fail
+  workaround: Hit refresh
+  recommendation: Investigate site Performance further
+  related-tests: 

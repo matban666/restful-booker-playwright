@@ -37,6 +37,7 @@ The overall concept is for the testing to be data driven.  Test data is provided
 │       ├── admin-session.ts
 │       ├── booking-list.ts
 │       └── ...
+├── restful-booker-platform-bugs.yaml
 ├── playwright.config.ts
 └── package.json
 </pre>
@@ -65,6 +66,10 @@ contact-form.spec.ts - This iterates through contact-form-messaging.json enterin
 
 room-booking.sec.ts - This creates rooms from rooms.json.  Makes bookings from bookings.json - some bad bookings are checked to.  Sucessful bookings are checked in the admin report, rooms, and messages pages.  The messages, bookings and rooms are deleted afterwards.
 
+## Restful Booker Bugs
+
+An example of bugs observed in the Restful Booker Platform can be found in restful-booker-platform-bugs.yaml.  Areas not addressed or addressed fully include securty, accessibility and detail on performance.
+
 
 ## Todo
 Admin credentials to be stored in a secure location
@@ -72,21 +77,20 @@ Tidy room-booking.spec.ts
 Room booking is also a bit flaky
 Make sure there is enoug info in the errors
 Switch between staging and production
+Get the github action working
 
-
-## Restful Booker Bugs
-
-
-
-## Tests to do
+## Known Missing Tests
 Check price for booking is correct
 Create room with negative price
 Update room details and check the changes are reflected
 Check that message has been read
 New message count
 Book directly on report calendar
-What about the REST backend tests?
-Cookie policy link on privacy policy page is broken
+REST backend tests
+Cookie policy link on privacy policy page is broken bug #15
+Invalid credential for admin login
+More valid/invalid input tests for contact form
+More valid/invalid input tests for booking form
 
-## Untested
+## Tests to add if bug fixed
 Cancel button on room edit
