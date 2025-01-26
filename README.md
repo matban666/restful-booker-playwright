@@ -76,9 +76,9 @@ An example of bugs observed in the Restful Booker Platform can be found in restf
 
 ## Todo
 - Admin credentials to be stored in a secure location
-- Tidy room-booking.spec.ts
-- Room booking is also a bit flaky
-- Make sure there is enoug info in the errors
+- booking-list.ts, message-list.ts, room-list.ts comonality should be refactored using templates/generics
+- Some tests are a bit flakey due to react components not loading in a timeley manner
+- Some of the playwright errors don't give useful information - see if this can be improved
 - Switch between staging and production
 - Get the github action working
 
@@ -90,10 +90,10 @@ An example of bugs observed in the Restful Booker Platform can be found in restf
 - New message count
 - Book directly on report calendar
 - REST backend tests
-- Cookie policy link on privacy policy page is broken bug #15
+- Cookie policy link on privacy policy page is broken (bug #15)
 - Invalid credential for admin login
 - More valid/invalid input tests for contact form
 - More valid/invalid input tests for booking form
 
 ## Tests to add if bug fixed
-- Cancel button on room edit
+- Cancel button on room edit (bug #9)
