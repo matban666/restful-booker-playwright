@@ -97,6 +97,7 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 - Some of the playwright errors don't give useful information - see if this can be improved
 - Switch between staging and production
 - Get the github action working
+- Get Playwright to use Gherkin?
 
 ## Known Missing Tests
 - Check price for booking is correct
