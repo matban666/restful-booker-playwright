@@ -41,13 +41,13 @@ Playwright - see https://playwright.dev/docs/intro#installing-playwright
 └── package.json
 </pre>
 
-test-data contains json files containing data for test that require different permeatations
-test-data/types contain interfaces for each of the files
-tests contains tests that test an isolates part of the site such as static items and navigation
-tests/end-to-end contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
-utils/backend contains a module to directly test the rest api backend - just used for house keeping
-utils/domain contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
-utils/playwright contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
+- test-data contains json files containing data for test that require different permeatations
+- test-data/types contain interfaces for each of the files
+- tests contains tests that test an isolates part of the site such as static items and navigation
+- tests/end-to-end contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
+- utils/backend contains a module to directly test the rest api backend - just used for house keeping
+- utils/domain contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
+- utils/playwright contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
 
 ### Tests
 
