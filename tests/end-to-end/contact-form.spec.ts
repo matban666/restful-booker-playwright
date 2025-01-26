@@ -6,15 +6,16 @@ import { newAdminSession } from '../../utils/playwright/admin-session';
 import { ContactMessage } from '../../test-data/types/contact-message';
 import { BadEmail } from '../../test-data/types/bad-email';
 
-  
+
+// Broadly the tests can be parallel, but the tests that send, check and delete messages need to be serial
 test.describe.parallel('Contact Form', () => {
     const contactFormMessages: ContactMessage[] = loadJsonTestConfig('contact-form-messages.json'); 
     const badEmails: BadEmail[] = loadJsonTestConfig('bad-emails.json'); 
 
+    // These tests are serial because they sequentually sending, checking and deleting messages
     test.describe.serial('Valid Messages', () => {
         contactFormMessages.forEach((message: ContactMessage) => {
             test(`Send message from: ${message.contactName}`, async ({ page }) => {
-                console.log(`contactFormMessages.forEach ${message.contactName} 1`);
                 await loadHomepage(page);
 
                 // Fill and submit form
@@ -37,21 +38,15 @@ test.describe.parallel('Contact Form', () => {
             });
             
             test(`Check message arrived exactly once from: ${message.contactName}`, async ({ page, baseURL }) => {
-                console.log(`contactFormMessages.forEach ${message.contactName} 2`);
                 //Count messages from this contact
                 await newAdminSession(page, baseURL);
-                console.log(`contactFormMessages.forEach ${message.contactName} 2.1`);
                 const messsageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
-                console.log(`contactFormMessages.forEach ${message.contactName} 2.2`);
             });
 
             test(`Check content of message from: ${message.contactName}`, async ({ page, baseURL }) => {
-                console.log(`contactFormMessages.forEach ${message.contactName} 3`);
                 await newAdminSession(page, baseURL);
 
-                console.log(`contactFormMessages.forEach ${message.contactName} 3.1`);
                 const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
-                console.log(`contactFormMessages.forEach ${message.contactName} 3.2`);
 
                 expect(messageList).not.toBeNull();
 
@@ -76,12 +71,9 @@ test.describe.parallel('Contact Form', () => {
             });
 
             test(`Delete message from: ${message.contactName}`, async ({ page, baseURL }) => {
-                console.log(`contactFormMessages.forEach ${message.contactName} 4`);
                 await newAdminSession(page, baseURL);
 
-                console.log(`contactFormMessages.forEach ${message.contactName} 4.1`);
                 const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
-                console.log(`contactFormMessages.forEach ${message.contactName} 4.2`);
 
                 expect(messageList).not.toBeNull();
 

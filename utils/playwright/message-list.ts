@@ -1,3 +1,7 @@
+// Reads the message list and returns the booking details with a retry mechanism to deal with late/partial list loading
+// booking-list.ts, message-list.ts, room-list.ts commonality should be refactored using templates/generics
+// booking-list.ts, message-list.ts, room-list.ts also use the any type, these should be strogly types as part of the above work
+
 import { expect, type Page } from '@playwright/test';  
 
 async function* findMessages(page: Page, name: string, subject: string) {

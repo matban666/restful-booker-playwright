@@ -26,7 +26,7 @@ export async function newAdminSession(page: Page, baseURL: string|undefined) {
     await page.getByTestId('password').fill(password);
     await page.getByRole('button', { name: 'Login' }).click();
 
-    // To enure cookies are set
+    // To ensure cookies are set
     await page.waitForURL(baseURL + '#/admin');
 
     await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
@@ -41,7 +41,7 @@ export async function newAdminSession(page: Page, baseURL: string|undefined) {
 }
 
 export async function resumeAdminSession(page: Page) {
-    // TODO: Cuuld do with detting rid any
+    // TODO: Cuuld do with getting rid any
     const auth: any = loadJsonTestConfig(authFile)
     
     const cookies: any = auth['cookies']

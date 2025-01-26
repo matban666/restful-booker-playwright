@@ -1,3 +1,5 @@
+// Calendar utilities
+
 export class Calendar {
     static getMonthYear(monthOffset: number = 0): string {
         const today = new Date();

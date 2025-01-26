@@ -1,14 +1,15 @@
-import { expect, type Page, type Locator } from '@playwright/test';
-import { changeMonth, selectDates } from './calendar';
+import { expect, type Page } from '@playwright/test';
+import { selectDates } from './calendar';
 import { Booking } from '../../test-data/types/booking';
 
 export async function bookRoom(page: Page, booking: Booking) {
     await expect(page.getByRole('heading', { name: 'Rooms' })).toBeVisible();
-  
-    const calendarLocator = page.locator(`//div[img[@alt="Preview image of room${booking.roomName}"]]/parent::*/parent::*`)
-    
+
+    //Click the book button for the appropriate room
     await page.locator(`//div[img[@alt="Preview image of room${booking.roomName}"]]/following-sibling::div/button`).click();
   
+    //Locate calendar and select dates
+    const calendarLocator = page.locator(`//div[img[@alt="Preview image of room${booking.roomName}"]]/parent::*/parent::*`)
     await selectDates(calendarLocator, booking.monthOffset, booking.checkIn, booking.checkOut, booking.expectedSuccess);
   
   

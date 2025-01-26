@@ -18,6 +18,11 @@ export async function applyBranding(page: Page, branding: any) {
 
     // Submit the branding form
     await page.getByRole('button', { name: 'Submit' }).click();
+
+    //Arbitraty sleeps should be avoided.  There seems to be some asychronous between the delete 
+    //button being pressed and the rest call being sent.  See if we can determine a way
+    //to detect this without the need for a sleep
+    await page.waitForTimeout(100);
 }
 
 
@@ -64,8 +69,8 @@ export async function checkBranding(page: Page, branding: any) {
 
             return;
         } catch (error) {
-            console.log(`Exception in checkBranding(page, ${branding}) is below.  Ignoring and potentially retrying.`);
-            console.log(error);
+            console.log(`Exception in checkBranding(page, ${branding}).  Ignoring and potentially retrying.`);
+            // console.log(error);
             await page.waitForTimeout(50); 
         }
     }

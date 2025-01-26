@@ -37,6 +37,12 @@ Performance testing has been touched on but reproduction detail is light and exa
 
 1. npx playwright test
 
+### Expected Output
+
+Currently 71 tests shoul run.  69 should pass and 2 should fail (Copyright date checks).
+
+If the test fail midway it may be necessary to delete any leftover messages and rooms from the admin page.  I had intended to write a global teardown using the rest API to clean up completely but didn't have time.
+
 ## Running gitlab action
 
 ### First time configuration
@@ -51,6 +57,9 @@ Performance testing has been touched on but reproduction detail is light and exa
 ## Directory Structure
 
 <pre>
+├── .gtihub
+│   └── workflows
+│       └── playwright.yml
 ├── tests-data
 │   ├── types
 │   │   ├── bad-email.ts
@@ -100,6 +109,7 @@ Performance testing has been touched on but reproduction detail is light and exa
 - **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping during the suite development an not part of the current testing
 - **utils/domain** - contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
 - **utils/playwright** - contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
+- **gtihub/workflows** - contans the github actions playwright.yml file
 
 ## Test Plans
 
@@ -144,7 +154,10 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 - Cancel button on room edit (bug #9)
 
 ## Additional Work
-- booking-list.ts, message-list.ts, room-list.ts comonality should be refactored using templates/generics
+- "TODO" comments within the test code document further checks and work
+- booking-list.ts, message-list.ts, room-list.ts commonality should be refactored using templates/generics
+- booking-list.ts, message-list.ts, room-list.ts also use the any type, these should be strogly types as part of the above work
+- Create a global teardown to clear out any remaining rooms/messages/bookings in the case of test failures
 - Some tests are a bit flakey due to react components not loading in a timely manner
 - Some of the playwright errors don't give useful information - see if this can be improved
 - github action works but all the tests rarely pass - why

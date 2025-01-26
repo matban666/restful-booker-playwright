@@ -1,3 +1,5 @@
+// Not currently used, but could be basis of backend tests and for cleaning up after tests
+
 import axios from 'axios';
 import { loadJsonTestConfig } from '../domain/json-loader';
 import { FullConfig } from '@playwright/test';  
@@ -18,8 +20,6 @@ async function login(config: FullConfig) {
     // Extract the token from the response
     const setCookieHeader = response.headers['set-cookie'];
     const token = setCookieHeader && setCookieHeader.length > 0 ? setCookieHeader[0].split(';')[0] : '';
-
-    // console.log(`Token: ${token}`);
 
     return token;
 }
@@ -48,16 +48,11 @@ export async function deleteAllRooms(config: FullConfig) {
 
     const roomNames = new Set(loadRoomData().map((data: { roomName: string }) => data.roomName));
 
-    // console.log('roomNames');
-    // console.log(roomNames);
     const { baseURL } = config.projects[0].use;
     const response2 = await axios.get(baseURL + 'room/', {headers});
 
     for (const room of response2.data['rooms']) {
         if (roomNames.has(room.roomName)) {
-            // console.log("Deleting");
-            // console.log(room.roomName);
-            // console.log(room.roomid);
             await axios.delete(`${baseURL}room/${room.roomid}`, {headers});
         }
     }

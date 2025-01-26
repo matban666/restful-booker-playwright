@@ -1,3 +1,5 @@
+// Type and function to generate expected messages for bookings based on the booking data
+
 import { Calendar } from '../domain/calendar';
 
 export interface BookingMessage {
