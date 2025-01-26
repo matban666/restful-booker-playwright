@@ -84,7 +84,7 @@ $ npx playwright test
 
 ## Feature Tests
 
-**static-content-spec.ts** - These tests iterate through the pages provided in pages.json test to ensure they all have the footer and that the footer links work, one test deliberately fails on the copyright being shown as 24 and not 25.
+**static-content-spec.ts** - These tests iterate through the pages provided in pages.json to ensure they all have the footer and that the footer links work, one test deliberately fails on the copyright being shown as 24 and not 25.
 
 **admin-navigation-spec.ts** - This test checks that the links on the admin page all work.  It also checks that if not logged in the admin links redirect to the login page.  It checks that you can naviate between the booking and admin page.
 
