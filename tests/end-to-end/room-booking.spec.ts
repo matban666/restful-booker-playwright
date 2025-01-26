@@ -11,7 +11,6 @@ import { type Room } from '../../test-data/types/room';
 import { type Booking } from '../../test-data/types/booking';
 import { changeMonth } from '../../utils/playwright/calendar';
 import { Calendar } from '../../utils/domain/calendar';
-import exp from 'constants';
 
 
 //Booking tests are serial because they depend on each other
@@ -244,6 +243,10 @@ test.describe.serial('Booking Tests', () => {
 
           if (bookingList !== null && bookingList.length > 0) {
             await bookingList[0].deleteIcon.click();
+
+            //Arbitraty sleeps should be avoided.  There seems to be some asychronous between the delete 
+            //button being pressed and the rest call being sent.  See if we can determine a way
+            //to detect this without the need for a sleep
             await page.waitForTimeout(100);
           }
 
@@ -283,6 +286,10 @@ test.describe.serial('Booking Tests', () => {
           if (messageList !== null && messageList.length > 0) {
             console.log(`Found ${messageList.length} messages from ${sender} for ${subject}`);
             await messageList[0].deleteIcon.click();
+
+            //Arbitraty sleeps should be avoided.  There seems to be some asychronous between the delete 
+            //button being pressed and the rest call being sent.  See if we can determine a way
+            //to detect this without the need for a sleep
             await page.waitForTimeout(100);
           }
         }
@@ -314,6 +321,10 @@ test.describe.serial('Booking Tests', () => {
           // Delete the room
           console.log(`Delete item: ${room.roomName}`);
           await roomsInList[0].deleteIcon.click();
+
+          //Arbitraty sleeps should be avoided.  There seems to be some asychronous between the delete 
+          //button being pressed and the rest call being sent.  See if we can determine a way
+          //to detect this without the need for a sleep
           await page.waitForTimeout(100);
         }
       }

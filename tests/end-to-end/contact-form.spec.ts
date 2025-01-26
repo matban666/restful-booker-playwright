@@ -87,6 +87,10 @@ test.describe.parallel('Contact Form', () => {
 
                 if (messageList !== null && messageList.length === 1) {
                     await messageList[0].deleteIcon.click();
+
+                    //Arbitraty sleeps should be avoided.  There seems to be some asychronous between the delete 
+                    //button being pressed and the rest call being sent.  See if we can determine a way
+                    //to detect this without the need for a sleep
                     await page.waitForTimeout(100);
                 }
             });
