@@ -1,6 +1,6 @@
 # Restful Booker Playwright Test Suite
 
-## Overview
+## Description
 Playwright test suite for the Restful Booker Platform found at https://automationintesting.online/
 
 The Restful Booker Platform is a React front end served by a Java REST API.
