@@ -30,7 +30,7 @@ Performance testing has been touched on but reproduction detail is light and exa
 3. nvm install 23.6.0
 4. nvm use 23.6.0
 5. npm install
-6. Create a .env file and set values ([shown in the banner}(https://automationintesting.online/)) for ADMIN_USERNAME and ADMIN_PASSWORD
+6. Create a .env file and set values ([shown in the banner](https://automationintesting.online/)) for ADMIN_USERNAME and ADMIN_PASSWORD
 7. To run against an different site you can also set BASE_URL in .env
 
 ### Every time
