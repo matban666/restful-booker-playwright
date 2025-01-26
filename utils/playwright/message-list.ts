@@ -25,7 +25,7 @@ export async function getMessages(page: Page, name: string, subject: string, ret
 
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundItems: any[] = [];
+        let foundItems: any[] = [];   //use of any is bad, get this typed proerly
 
         try {
             for await (const matchingBooking of findMessages(page, name, subject)) { 
@@ -47,7 +47,7 @@ export async function getMessages(page: Page, name: string, subject: string, ret
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneMessage for ${name} ${subject}`);
-        await page.waitForTimeout(50); 
+        await page.waitForTimeout(100); 
     }
 
     return null;

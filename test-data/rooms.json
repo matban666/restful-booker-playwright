@@ -22,7 +22,7 @@
         "type": "Twin",
         "accessible": true,
         "description": "Please enter a description for this room",
-        "image": "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
+        "image": "https://automationintesting.online/images/room2.jpg",
         "roomPrice": 444,
         "features": [
             "WiFi",

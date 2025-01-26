@@ -31,7 +31,7 @@ export async function getBookings(page, firstname, lastname, checkInString, chec
     // TODO: Report how long this actually takes
     for (let retry = 0; retry < retries; retry++) {
         let count = 0;
-        let foundItems: any[] = [];
+        let foundItems: any[] = [];  //use of any is bad, get this typed proerly
 
         try {
             for await (const matchingBooking of findBookings(page, firstname, lastname, checkInString, checkOutString)) {  
@@ -53,7 +53,7 @@ export async function getBookings(page, firstname, lastname, checkInString, chec
         }
 
         console.log(`Retry ${retry + 1} of ${retries} for getExactlyOneBooking for ${firstname} ${lastname} ${checkInString} ${checkOutString}`);
-        await page.waitForTimeout(50); 
+        await page.waitForTimeout(100); 
     }
 
     return null;

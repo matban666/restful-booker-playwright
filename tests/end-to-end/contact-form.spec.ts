@@ -5,80 +5,91 @@ import { getMessages } from '../../utils/playwright/message-list';
 import { newAdminSession } from '../../utils/playwright/admin-session';
 import { ContactMessage } from '../../test-data/types/contact-message';
 import { BadEmail } from '../../test-data/types/bad-email';
-import exp from 'constants';
 
   
 test.describe.parallel('Contact Form', () => {
     const contactFormMessages: ContactMessage[] = loadJsonTestConfig('contact-form-messages.json'); 
     const badEmails: BadEmail[] = loadJsonTestConfig('bad-emails.json'); 
 
-    contactFormMessages.forEach((message: ContactMessage) => {
-        test(`Send message from: ${message.contactName}`, async ({ page }) => {
-            await loadHomepage(page);
+    test.describe.serial('Valid Messages', () => {
+        contactFormMessages.forEach((message: ContactMessage) => {
+            test(`Send message from: ${message.contactName}`, async ({ page }) => {
+                console.log(`contactFormMessages.forEach ${message.contactName} 1`);
+                await loadHomepage(page);
 
-            // Fill and submit form
-            await page.getByTestId('ContactName').fill(message.contactName);
-            await page.getByTestId('ContactEmail').fill(message.contactEmail);
-            await page.getByTestId('ContactSubject').fill(message.contactSubject);
-            await page.getByTestId('ContactPhone').fill(message.contactPhone);
-            await page.getByTestId('ContactDescription').fill(message.contactDescription);
-            await page.getByRole('button', { name: 'Submit' }).click();
+                // Fill and submit form
+                await page.getByTestId('ContactName').fill(message.contactName);
+                await page.getByTestId('ContactEmail').fill(message.contactEmail);
+                await page.getByTestId('ContactSubject').fill(message.contactSubject);
+                await page.getByTestId('ContactPhone').fill(message.contactPhone);
+                await page.getByTestId('ContactDescription').fill(message.contactDescription);
+                await page.getByRole('button', { name: 'Submit' }).click();
 
-            // Check that the form has been submitted
-            // Reading from the page asynchronously seems to be safe
-            const promises: Promise<void>[] = [];
-            promises.push(expect(page.getByRole('heading', { name: 'Thanks for getting in touch' })).toBeVisible());
-            promises.push(expect(page.getByRole('heading', { name: message.contactName })).toBeVisible());
-            promises.push(expect(page.getByText('We\'ll get back to you about')).toBeVisible());
-            promises.push(expect(page.getByText(message.contactSubject)).toBeVisible());
-            promises.push(expect(page.getByText('as soon as possible.')).toBeVisible());
-            await Promise.all(promises);
-        });
-        
-        test(`Check message arrived exactly once from: ${message.contactName}`, async ({ page, baseURL }) => {
-            //Count messages from this contact
-            await newAdminSession(page, baseURL);
+                // Check that the form has been submitted
+                // Reading from the page asynchronously seems to be safe
+                const promises: Promise<void>[] = [];
+                promises.push(expect(page.getByRole('heading', { name: 'Thanks for getting in touch' })).toBeVisible());
+                promises.push(expect(page.getByRole('heading', { name: message.contactName })).toBeVisible());
+                promises.push(expect(page.getByText('We\'ll get back to you about')).toBeVisible());
+                promises.push(expect(page.getByText(message.contactSubject)).toBeVisible());
+                promises.push(expect(page.getByText('as soon as possible.')).toBeVisible());
+                await Promise.all(promises);
+            });
+            
+            test(`Check message arrived exactly once from: ${message.contactName}`, async ({ page, baseURL }) => {
+                console.log(`contactFormMessages.forEach ${message.contactName} 2`);
+                //Count messages from this contact
+                await newAdminSession(page, baseURL);
+                console.log(`contactFormMessages.forEach ${message.contactName} 2.1`);
+                const messsageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+                console.log(`contactFormMessages.forEach ${message.contactName} 2.2`);
+            });
 
-            await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
-        });
+            test(`Check content of message from: ${message.contactName}`, async ({ page, baseURL }) => {
+                console.log(`contactFormMessages.forEach ${message.contactName} 3`);
+                await newAdminSession(page, baseURL);
 
-        test(`Check content of message from: ${message.contactName}`, async ({ page, baseURL }) => {
-            await newAdminSession(page, baseURL);
+                console.log(`contactFormMessages.forEach ${message.contactName} 3.1`);
+                const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+                console.log(`contactFormMessages.forEach ${message.contactName} 3.2`);
 
-            const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+                expect(messageList).not.toBeNull();
 
-            expect(messageList).not.toBeNull();
+                if (messageList !== null && messageList.length === 1) {
+                    // Click on the message
+                    await messageList[0].row.click();
 
-            if (messageList !== null && messageList.length === 1) {
-                // Click on the message
-                await messageList[0].row.click();
+                    // Check that a message is displayed
+                    const messageLocator = page.getByTestId('message');
+                    await expect(messageLocator).toBeVisible();
 
-                // Check that a message is displayed
-                const messageLocator = page.getByTestId('message');
-                await expect(messageLocator).toBeVisible();
+                    // Check that the message is displayed correctly
+                    await expect(messageLocator.getByText(`From: ${message.contactName}`)).toBeVisible();
+                    await expect(messageLocator.getByText(`Phone: ${message.contactPhone}`)).toBeVisible();
+                    await expect(messageLocator.getByText(`Email: ${message.contactEmail}`)).toBeVisible();
+                    await expect(messageLocator.getByText(message.contactSubject)).toBeVisible();
+                    await expect(messageLocator.getByText(message.contactDescription)).toBeVisible();
 
-                // Check that the message is displayed correctly
-                await expect(messageLocator.getByText(`From: ${message.contactName}`)).toBeVisible();
-                await expect(messageLocator.getByText(`Phone: ${message.contactPhone}`)).toBeVisible();
-                await expect(messageLocator.getByText(`Email: ${message.contactEmail}`)).toBeVisible();
-                await expect(messageLocator.getByText(message.contactSubject)).toBeVisible();
-                await expect(messageLocator.getByText(message.contactDescription)).toBeVisible();
+                    // Close the message
+                    await page.getByRole('button', { name: 'Close' }).click();
+                }
+            });
 
-                // Close the message
-                await page.getByRole('button', { name: 'Close' }).click();
-            }
-        });
+            test(`Delete message from: ${message.contactName}`, async ({ page, baseURL }) => {
+                console.log(`contactFormMessages.forEach ${message.contactName} 4`);
+                await newAdminSession(page, baseURL);
 
-        test(`Delete message from: ${message.contactName}`, async ({ page, baseURL }) => {
-            await newAdminSession(page, baseURL);
+                console.log(`contactFormMessages.forEach ${message.contactName} 4.1`);
+                const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+                console.log(`contactFormMessages.forEach ${message.contactName} 4.2`);
 
-            const messageList = await getMessages(page, message.contactName, message.contactSubject, 10, 1, true);
+                expect(messageList).not.toBeNull();
 
-            expect(messageList).not.toBeNull();
-
-            if (messageList !== null && messageList.length === 1) {
-                await messageList[0].deleteIcon.click();
-            }
+                if (messageList !== null && messageList.length === 1) {
+                    await messageList[0].deleteIcon.click();
+                    await page.waitForTimeout(100);
+                }
+            });
         });
     });
 

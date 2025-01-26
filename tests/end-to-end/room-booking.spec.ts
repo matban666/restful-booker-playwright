@@ -61,8 +61,8 @@ test.describe.serial('Booking Tests', () => {
       const { checkInString, checkOutString } = Calendar.getCheckInAndCheckOutStrings(booking.monthOffset, booking.checkIn, booking.checkOut);
       const expectedFullName = `${booking.firstname} ${booking.lastname}`;
 
-      test(`Check Report for: ${booking.email} ${expectedFullName} ${booking.roomName} ${checkInString} ${checkOutString} `, async ({ page }) => {
-        await resumeAdminSession(page);
+      test(`Check Report for: ${booking.email} ${expectedFullName} ${booking.roomName} ${checkInString} ${checkOutString} `, async ({ page, baseURL }) => {
+        await newAdminSession(page, baseURL);
 
         await expect(page.getByRole('link', { name: 'Report' })).toBeVisible();
         await page.getByRole('link', { name: 'Report' }).click();
@@ -142,8 +142,6 @@ test.describe.serial('Booking Tests', () => {
 
           console.log(`Found ${matchingMessages.length} messages for ${subject}`);
 
-
-
           for (const message of matchingMessages) {
             await message.row.click();
 
@@ -204,16 +202,13 @@ test.describe.serial('Booking Tests', () => {
           expect(bookingList).not.toBeNull();
 
           if (bookingList !== null && bookingList.length > 0) {
-          // Edit the booking
+            // Edit the booking
             await bookingList[0].editIcon.click();
 
             //TODO: Actually edit the booking, this would requre subsequent tests to check the changes so it needs some thought
 
             await page.locator('//span[contains(@class, "confirmBookingEdit")]').click();
           }
-
-
-
         }
       });
     }
@@ -249,15 +244,10 @@ test.describe.serial('Booking Tests', () => {
 
           if (bookingList !== null && bookingList.length > 0) {
             await bookingList[0].deleteIcon.click();
-
-            //TODO: Actually edit the booking, this would requre subsequent tests to check the changes so it needs some thought
-
-            await page.locator('//span[contains(@class, "confirmBookingEdit")]').click();
+            await page.waitForTimeout(100);
           }
 
-
           //TODO: Check the booking is gone
-          //await isBookingNotThere(page, booking.firstname, booking.lastname, checkInString, checkOutString);
         }
       });
     }
@@ -293,6 +283,7 @@ test.describe.serial('Booking Tests', () => {
           if (messageList !== null && messageList.length > 0) {
             console.log(`Found ${messageList.length} messages from ${sender} for ${subject}`);
             await messageList[0].deleteIcon.click();
+            await page.waitForTimeout(100);
           }
         }
 
@@ -321,7 +312,9 @@ test.describe.serial('Booking Tests', () => {
 
         if (roomsInList.length > 0) {
           // Delete the room
+          console.log(`Delete item: ${room.roomName}`);
           await roomsInList[0].deleteIcon.click();
+          await page.waitForTimeout(100);
         }
       }
     });
