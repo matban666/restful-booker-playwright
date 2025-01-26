@@ -1,7 +1,7 @@
 # Restful Booker Playwright Test
 
 ## Overview
-Plawright test suite for the Restfuk Booker Platform found at https://automationintesting.online/
+Playwright test suite for the Restfuk Booker Platform found at https://automationintesting.online/
 
 The overall concept is for the testing to be data driven.  Test data is provided in json files which is iterated over by the tests.  Test code is orgnised so that common functionaluty is factored out into modules. This results in almost no code duplication and ease of adding new tests cases just by adding them to the json or adding/modifying test usign shared components. 
 
