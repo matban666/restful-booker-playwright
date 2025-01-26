@@ -9,6 +9,7 @@ Playright - see https://playwright.dev/docs/intro#installing-playwright
 
 ## Directory Structure
 
+<pre>
 ├── tests
 │   ├── end-to-end
 │   │   ├──branding.spec.ts
@@ -19,6 +20,7 @@ Playright - see https://playwright.dev/docs/intro#installing-playwright
 │   └── static-content.spec.ts
 ├── playwright.config.ts
 └── package.json
+</pre>
 
 
 ## Todo
