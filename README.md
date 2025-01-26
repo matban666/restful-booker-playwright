@@ -9,9 +9,9 @@ The overall concept is for the testing to be data driven.  Test data is provided
 
 At a top level the tests can be run in parallel as can some of the less dynamic tests.  The end-to-end test are serial as they are order dependant and the data is shared to an extent (such ass across browser).  Because of the live nature of the target site the suite generates all of its own artefacts such as rooms/bookings/messages and deletes them afterwards.  This prevents it from messing up other users tests and hopefully other users from messing up these tests.  It does not take any absolute unfiltered counts or attempt to delete anything that it hasn't created.  
 
-The focus has been on end-to-end testing with some more granular testing.  These could be complemented by more isolated feature testing.  Such isolated tests would requre their own data which would be trivial to add using the provided mechanisms.  
+The focus has been on end-to-end testing to quickly identify if the sites function is complete from customer and admin user perspectives. Basic navigation, static content and feature testing has been provided.  These could be complemented by more isolated feature testing.  Such isolated tests would requre their own data which would be trivial to add using the provided mechanisms.  The isolated feature/integration testing would give quicker test/dev turnaround for feature development.
 
-The suite has been tested against a local hosted version too but in exatly the same way as the live version.  Additional staging only tests could be added to test the site in a more comprehensive manner, for example deleting all known bookings/messages and ensuring that the assiciated lists are completely empty.  
+The suite has also been tested against a locally hosted version of the target site but in exatly the same way as the live version.  Additional staging only tests could be added to test the site in a more comprehensive manner, for example deleting all known bookings/messages and ensuring that the assiciated lists are completely empty.  
 
 Performance testing has been touched on but reproduction detail is light and exact timings have not been given.  No load testing has been carried out.  Accessibility has been touched on.  Securty has not been tested other than admin pages re-directing to the login page when not logged in.
 
@@ -65,7 +65,7 @@ $ npx playwright test
 - **test-data/types** - contain interfaces for each of the files
 - **tests** - contains tests that test an isolates part of the site such as static items and navigation
 - **tests/end-to-end** - contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
-- **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping
+- **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping during the suite development an not part of the current testing
 - **utils/domain** - contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
 - **utils/playwright** - contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
 
