@@ -1,4 +1,4 @@
-# Restful Booker Playwright Test
+# Restful Booker Playwright Test Suite
 
 ## Overview
 Playwright test suite for the Restfuk Booker Platform found at https://automationintesting.online/
