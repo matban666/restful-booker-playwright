@@ -41,7 +41,7 @@ Playwright - see https://playwright.dev/docs/intro#installing-playwright
 └── package.json
 </pre>
 
-- **test-data** contains json files containing data for test that require different permeatations
+- **test-data** - contains json files containing data for test that require different permeatations
 - **test-data/types** contain interfaces for each of the files
 - **tests** contains tests that test an isolates part of the site such as static items and navigation
 - **tests/end-to-end** contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
