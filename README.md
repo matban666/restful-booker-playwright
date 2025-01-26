@@ -71,6 +71,7 @@ $ npx playwright test
 
 - **test-data** - contains json files containing data for test that require different permeatations
 - **test-data/types** - contain interfaces for each of the files
+- **tests-plans** - contains tests test plans for the associated tests
 - **tests** - contains tests that test an isolates part of the site such as static items and navigation
 - **tests/end-to-end** - contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
 - **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping during the suite development an not part of the current testing
