@@ -155,6 +155,7 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 
 ## Additional Work
 - "TODO" comments within the test code document further checks and work
+- Test on more browsers
 - booking-list.ts, message-list.ts, room-list.ts commonality should be refactored using templates/generics
 - booking-list.ts, message-list.ts, room-list.ts also use the any type, these should be strogly types as part of the above work
 - Create a global teardown to clear out any remaining rooms/messages/bookings in the case of test failures
