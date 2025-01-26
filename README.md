@@ -35,6 +35,14 @@ $ npx playwright test
 │   │   └── ...
 │   ├──bad-emails.ts
 │   │   └── ...
+├── tests-plans
+│   ├── end-to-end
+│   │   ├──branding.feature
+│   │   ├──contact-form.feature
+│   │   └──room-booking.feature
+│   ├── admin-navigation.feature
+│   ├── calendar.feature
+│   └── static-content.feature
 ├── tests
 │   ├── end-to-end
 │   │   ├──branding.spec.ts
@@ -68,6 +76,10 @@ $ npx playwright test
 - **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping during the suite development an not part of the current testing
 - **utils/domain** - contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
 - **utils/playwright** - contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
+
+## Test Plans
+
+[Test Plans](https://github.com/matban666/restful-booker-playwright/tree/main/test-plans) 
 
 ## Feature Tests
 
