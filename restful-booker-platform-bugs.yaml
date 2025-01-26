@@ -1,0 +1,390 @@
+- id: 1
+  related:
+  classification: NonFunctional, Accessibility
+  description: Does not adapt well to small screens so booking by dragging on the calendar is very tricky
+  browsers: All
+  severity: High
+  severity-justification: Potential loss of revenue Mobile is likely the main device for many users
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/ on a mobile device
+      - Click on any "Book this Room" button
+      - Try to drag the calendar to select a date range 
+    expected: A date range is selected
+    actual: Slection may or may not occur
+  workaround: Use a desktop device
+  recommendation: Mobile version or add mobile firendly date pickers
+  related-tests:
+
+- id: 2
+  related: 1
+  classification: 
+  description: Calendar is not operable by keyboard
+  browsers: All
+  severity: Low
+  severity-justification: Not used by many users but could affect those with disabilities
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on any "Book this Room" button
+      - Tab to a date
+      - Try to select with Shift/Ctrl/Space/Enter/Arrow keys/Tab
+    expected: Selection is made
+    actual: No selection is made
+  workaround: Use a mouse
+  recommendation: Add keyboard firendly date pickers, allow date to be typed in.
+  related-tests:
+
+- id: 3
+  related:
+  classification: Functional
+  description: You can create multiple rooms with the same name
+  browsers: All
+  severity: Medium
+  severity-justification: Could cause confusion for users and make it hard to manage room bookings
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin and login
+      - Enter details for a new room with the same name as an existing room
+      - Click "Create"
+    expected: Error to say room already exists
+    actual: Room is created
+  workaround: Make sure new room names are unique
+  recommendation: Add a check to ensure new room names are unique
+  related-tests:
+
+- id: 4
+  related:
+  classification: NonFunctional
+  description: Room number can be a name or number but UI suggests it is a number
+  browsers: All
+  severity: Low
+  severity-justification: Could cause confusion for admin users
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin and login
+    expected: List header is "Room name/number"
+    actual: List header is "Room #"
+  workaround: Make sure admin users know that a room name can aslo be used
+  recommendation: Change the list header to "Room name/number", Add a hover tooltip to explain
+  related-tests:
+
+- id: 5
+  related:
+  classification: Functional
+  description: You can book a room in the past
+  browsers: All
+  severity: High
+  severity-justification: Could anger a customer if they do it by mistake
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on any "Book this Room" button
+      - Select a date range in the past
+      - Fill in the form with valid details and click "Book"
+    expected: Error to say date(s) are in the past
+    actual: A "Booking Successful!" message is displayed and booking can be seen the admin pages
+  workaround: Warn admin users to check the dates of bookings as they are made.
+  recommendation: Dispay an error and don't take the booking.
+  related-tests:
+
+- id: 6
+  related:
+  classification: 
+  description: Can't book beyond the current visible calendar dates
+  browsers: All
+  severity: Medium
+  severity-justification: Inconvenience for users
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on any "Book this Room" button
+      - Attempt to select mid month start and end dates by clicking 'Back' or 'Next' on the calendar inbetween selections.
+    expected: Selection to somehow contine 
+    actual: Selection will re-start from the current visible month
+  workaround: Place separate bookings for each month.
+  recommendation: Add separate date pickers for start and end dates.
+  related-tests:
+
+- id: 7
+  related:
+  classification: NonFunctional
+  description: Multiple room booking calendars are visible at once
+  browsers: All
+  severity: Low
+  severity-justification: Inconvenience for users
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on multiple "Book this Room" buttons
+    expected: Only one room to be expanded
+    actual: Multiple rooms are expanded
+  workaround: Press 'Cancel'
+  recommendation: Collapse current room when another room is expanded
+  related-tests:
+
+- id: 8
+  related: 9
+  classification: Functional
+  description: Booking is made for an extra night
+  browsers: All
+  severity: Critical
+  severity-justification: Loss of revenue as rooms cannot be booked by another customer on this extra night
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on any "Book this Room" button
+      - Select a date range and make a note dates and number of displayed nights (2) 20, 21, 22 (2025-01-20 to 2025-01-23)
+      - Fill in the form with valid details and click "Book"
+      - Observe the dates in the booking message
+      - Go to https://automationintesting.online/#/admin and login
+      - Click on messages and select the message for the booking
+      - Observe the dates in the booking message
+      - Click on "Rooms" 
+      - Click on the room that was booked
+      - Observe the dates in the booking list
+    expected: Booked dates to have check out day as original selected date
+    actual: The check out day is one day on from the original selected date
+  workaround: Manually adjust the booking in the admin pages
+  recommendation: Remove the additional day
+  related-tests:
+
+- id: 9
+  related: 8
+  classification: Functional
+  description: Booking cannot start on the check out day of another booking (related to previous bug)
+  browsers: All
+  severity: Critical
+  severity-justification: Loss of revenue
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Click on any "Book this Room" button
+      - Select a date range staring on the check out day of another booking
+      - Fill in the form with valid details and click "Book"
+    expected: Booking to be successful
+    actual: Booing is not successful
+  workaround: Manually adjust the blocking booking in the admin pages
+  recommendation: Remove the additional day, Perhaps existing booked rooms should be blocked out upto the evening before check out day.
+  related-tests:
+
+- id: 10
+  related:
+  classification: 
+  description: Contact errors are not consistent in terms of capitalisation and full stops
+  browsers: All
+  severity: Low
+  severity-justification: Nice to have
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Scroll to the cotact form
+      - Click "Submit" without filling in any details
+      - Enter an email address without an @ symbol
+    expected: Capiltalisation and full stops in the error messages to be consistent.
+    actual: Capiltalisation and full stops are not consistent.
+  workaround: N/A
+  recommendation:  Tidy up the error messages
+  related-tests:
+
+- id: 11
+  related:
+  classification: 
+  description: Branding does not allow apostrophes or dashes
+  browsers: All
+  severity: Medium
+  severity-justification: Results in incorrect customer facing grammar
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin and login 
+      - Click on "Branding"
+      - Enter into the description; "Whether you spell it greengrocers, greengrocer's, greengrocers', or even greengrocer's's (though that's less common!), you'll find the freshest produce at your local shop."
+      - Click "Submit"
+    expected: "Branding updated!"
+    actual: A "Description can only contain alpha characters and basic grammar" error message is displayed
+  workaround: Create a description without apostrophes.
+  recommendation: Allow the description to contain common punctuation.
+  related-tests:
+
+- id: 12
+  related:
+  classification: 
+  description: Copyright date is not up to date
+  browsers: All
+  severity: Low
+  severity-justification: Nice to have
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/
+      - Scorll to footer
+    expected: © 2019-25
+    actual: © 2019-24
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 13
+  related:
+  classification: NonFunctional
+  description: Enter does not submit the login form
+  browsers: All
+  severity: Low
+  severity-justification: Nice to have
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin
+      - Enter user and password
+      - Press the Enter key
+    expected: Log in form to submit
+    actual: Nothing happens
+  workaround: Tab to the 'Login' button and press Enter
+  recommendation: Enable form subission if Enter is pressed
+  related-tests:
+
+- id: 14
+  related:
+  classification: 
+  description: Cookie and Privacy pages do not have navigation links back to the home page
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - 
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 15
+  related:
+  classification: 
+  description: Cookie policy link on privacy policy page is broken
+  browsers: All
+  severity: Medium
+  severity-justification: 
+  reproduction: 
+    steps:
+      - 
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 16
+  related:
+  classification: 
+  description: Hotel Name is not displayed as text on the home page
+  browsers: All
+  severity: Medium
+  severity-justification: A screen reader for a blind or partially sighted user would not find the hotel name 
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin
+    expected: Hotel name to be in text form or even as a 'alt' atribute or hover over.
+    actual: Hotel name is displayed graphically in the logo and not as separate text.
+  workaround: N/A
+  recommendation: Add hotel name as text on the home page or in a way that screen readrs can pick it up.
+  related-tests:
+
+- id: 17
+  related:
+  classification: 
+  description: No favicon
+  browsers: All
+  severity: Medium
+  severity-justification: Poor branding
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin 
+    expected: Website tab do display an icon relating to the branding
+    actual: Default browser icon is displayed
+  workaround: N/A
+  recommendation: Add a favicon
+  related-tests:
+
+- id: 18
+  related:
+  classification: 
+  description: Relative path is not accepted for branding
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - Ensure the website has been resotred to its original state
+      - Go to https://automationintesting.online/#/admin and log in
+      - Click on "Branding"
+      - Observe that the Logo field contains "images/rbp-logo.jpg"
+      - Click "Submit"
+    expected: A "Branding updated!" message
+    actual: An "Url should be a correct url format" error message is displayed
+  workaround: Enter the full url such as "https://automationintesting.online/images/rbp-logo.jpg"
+  recommendation: Allow the form subission to accept relative URL paths.
+  related-tests:
+
+- id: 19
+  related:
+  classification: 
+  description: No cancel on room details page
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - Go to https://automationintesting.online/#/admin and log in
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 20
+  related:
+  classification: 
+  description: List edit icon inconsistency
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - 
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 21
+  related:
+  classification: 
+  description: Booking message does not say which room, although it can be looked up via the room pages or the report
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - 
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
+
+- id: 22
+  related:
+  classification: 
+  description: On the room page if you edit a room, then click delete, you cannot delete it
+  browsers: All
+  severity: 
+  severity-justification:
+  reproduction: 
+    steps:
+      - 
+    expected: 
+    actual: 
+  workaround: 
+  recommendation: 
+  related-tests:
