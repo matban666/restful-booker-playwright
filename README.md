@@ -42,20 +42,20 @@ Playwright - see https://playwright.dev/docs/intro#installing-playwright
 </pre>
 
 - **test-data** - contains json files containing data for test that require different permeatations
-- **test-data/types** contain interfaces for each of the files
-- **tests** contains tests that test an isolates part of the site such as static items and navigation
-- **tests/end-to-end** contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
-- **utils/backend** contains a module to directly test the rest api backend - just used for house keeping
-- **utils/domain** contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
-- **utils/playwright** contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
+- **test-data/types** - contain interfaces for each of the files
+- **tests** - contains tests that test an isolates part of the site such as static items and navigation
+- **tests/end-to-end** - contains tests that run through the system completely for partular aspect such as book rooms and check the admin details
+- **utils/backend** - contains a module to directly test the rest api backend - just used for house keeping
+- **utils/domain** - contains modules with re-usable functions that do not include any playwright calls such as date manipluation and formatting
+- **utils/playwright** - contains modules with re-usable functions that include snippets of playwright code to carry out particular tasks such as read a list
 
 ### Tests
 
-static-content-spec.ts - These tests iterate through the pages provided in pages.json test to ensure they all have the footer and that the footer links work, one test deliberately fails on the copyright being shown as 24 and not 25.
+**static-content-spec.ts** - These tests iterate through the pages provided in pages.json test to ensure they all have the footer and that the footer links work, one test deliberately fails on the copyright being shown as 24 and not 25.
 
-admin-navigation-spec.ts - This test checks that the links on the admin page all work.  It also checks that if not logged in the admin links redirect to the login page.  It checks that you can naviate between the booking and admin page.
+**admin-navigation-spec.ts** - This test checks that the links on the admin page all work.  It also checks that if not logged in the admin links redirect to the login page.  It checks that you can naviate between the booking and admin page.
 
-calendar.spec.ts - This checks that the month and year are correct and today is highlighted.  It checks that the month navigation buttons work correctly.
+**calendar.spec.ts** - This checks that the month and year are correct and today is highlighted.  It checks that the month navigation buttons work correctly.
 
 ### End To End Tests
 
