@@ -155,11 +155,11 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 
 ## Additional Work
 - "TODO" comments within the test code document further checks and work
-- Test on more browsers
+- Test on more browsers, might need per browser data sets
 - booking-list.ts, message-list.ts, room-list.ts commonality should be refactored using templates/generics
 - booking-list.ts, message-list.ts, room-list.ts also use the any type, these should be strogly types as part of the above work
 - Create a global teardown to clear out any remaining rooms/messages/bookings in the case of test failures
-- Some tests are a bit flakey due to react components not loading in a timely manner
+- Some tests are a bit flakey I think due to react components not loading in a timely manner
 - Some of the playwright errors don't give useful information - see if this can be improved
 - github action works but all the tests rarely pass - why
 - Get Playwright to use Gherkin?
