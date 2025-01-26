@@ -104,9 +104,9 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 
 
 ## Todo
-- Admin credentials to be stored in a secure location
+- Admin credentials to be stored in a secure location (github secrets)
 - booking-list.ts, message-list.ts, room-list.ts comonality should be refactored using templates/generics
-- Some tests are a bit flakey due to react components not loading in a timeley manner
+- Some tests are a bit flakey due to react components not loading in a timely manner
 - Some of the playwright errors don't give useful information - see if this can be improved
 - Switch between staging and production
 - Get the github action working

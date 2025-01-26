@@ -14,9 +14,16 @@ export async function newAdminSession(page: Page, baseURL: string|undefined) {
     await loadHomepage(page);
     await page.getByRole('link', { name: 'Admin panel' }).click();
     await expect(page.getByRole('link', { name: 'B&B Booking Management' })).toBeVisible();
+
+    const username = process.env.ADMIN_USERNAME;
+    const password = process.env.ADMIN_PASSWORD;
+
+    if (!username || !password) {
+        throw new Error('Admin credentials are not set in environment variables');
+    }
     
-    await page.getByTestId('username').fill('admin');
-    await page.getByTestId('password').fill('password');
+    await page.getByTestId('username').fill(username);
+    await page.getByTestId('password').fill(password);
     await page.getByRole('button', { name: 'Login' }).click();
 
     // To enure cookies are set
