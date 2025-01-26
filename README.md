@@ -6,8 +6,8 @@ Plawright test suite for the Restfuk Booker Platform found at https://automation
 The overall concept is for the testing to be data driven.  Test data is provided in json files which is iterated over by the tests.  Test code is orgnised so that common functionaluty is factored out into modules. This results in almost no code duplication and ease of adding new tests cases just by adding them to the json or adding/modifying test usign shared components. 
 
 ## Pre-requisites
-Node.js - tested with version 23.6.0
-Playwright - see https://playwright.dev/docs/intro#installing-playwright
+- **Node.js** - tested with version 23.6.0
+- **Playwright** - see https://playwright.dev/docs/intro#installing-playwright
 
 ## Directory Structure
 
