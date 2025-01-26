@@ -18,7 +18,7 @@ Performance testing has been touched on but reproduction detail is light and exa
 ## Pre-requisites
 - **Node.js** - tested with version 23.6.0
 - **Playwright** - see [Installing Playwright](https://playwright.dev/docs/intro#installing-playwright) 
-- **Targer Web Site** - [Restful Booker Platform](https://automationintesting.online/) available or a locally hosted version.  Source: [Github Repo](https://github.com/mwinteringham/restful-booker-platform) 
+- **Target Web Site** - [Restful Booker Platform](https://automationintesting.online/) available or a locally hosted version.  Source: [Github Repo](https://github.com/mwinteringham/restful-booker-platform) 
 
 ## Running
 
