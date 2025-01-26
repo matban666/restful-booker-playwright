@@ -125,16 +125,6 @@ room-booking.sec.ts - This creates rooms from rooms.json.  Makes bookings from b
 
 An example of bugs observed in the Restful Booker Platform can be found in [restful-booker-platform-bugs.yaml](https://github.com/matban666/restful-booker-playwright/blob/main/restful-booker-platform-bugs.yaml).  Areas not addressed or addressed fully include securty, accessibility and detail on performance.
 
-
-## Todo
-- Admin credentials to be stored in a secure location (github secrets)
-- booking-list.ts, message-list.ts, room-list.ts comonality should be refactored using templates/generics
-- Some tests are a bit flakey due to react components not loading in a timely manner
-- Some of the playwright errors don't give useful information - see if this can be improved
-- Switch between staging and production
-- Get the github action working
-- Get Playwright to use Gherkin?
-
 ## Known Missing Tests
 - Check price for booking is correct
 - Create room with negative price
@@ -150,3 +140,10 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 
 ## Tests to add if bug fixed
 - Cancel button on room edit (bug #9)
+
+## Additional Work
+- booking-list.ts, message-list.ts, room-list.ts comonality should be refactored using templates/generics
+- Some tests are a bit flakey due to react components not loading in a timely manner
+- Some of the playwright errors don't give useful information - see if this can be improved
+- github action works but all the tests rarely pass - why
+- Get Playwright to use Gherkin?
