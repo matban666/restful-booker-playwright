@@ -137,6 +137,8 @@ An example of bugs observed in the Restful Booker Platform can be found in [rest
 - Invalid credential for admin login
 - More valid/invalid input tests for contact form
 - More valid/invalid input tests for booking form
+- Room features are not selected when adding a room
+- Location map is not tested
 
 ## Tests to add if bug fixed
 - Cancel button on room edit (bug #9)
